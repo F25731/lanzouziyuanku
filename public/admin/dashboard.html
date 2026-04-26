@@ -1,0 +1,521 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>后台管理</title>
+  <style>
+    body{font-family:Arial,sans-serif;background:#f6f7fb;margin:0;color:#222}
+    .wrap{max-width:1100px;margin:0 auto;padding:24px}
+    .card{background:#fff;border-radius:14px;padding:18px;box-shadow:0 10px 30px rgba(0,0,0,.05);margin-bottom:16px}
+    .row{display:flex;gap:12px;flex-wrap:wrap}
+    .row > *{flex:1;min-width:180px}
+    input,select,textarea,button{padding:10px 12px;border-radius:10px;border:1px solid #d9dbe7;font-size:14px}
+    textarea{min-height:120px}
+    button{background:#2563eb;color:#fff;border:none;cursor:pointer}
+    button.secondary{background:#64748b}
+    table{width:100%;border-collapse:collapse}
+    th,td{padding:10px 8px;border-bottom:1px solid #eceef5;text-align:left;font-size:14px;vertical-align:top}
+    .muted{color:#64748b;font-size:13px}
+  </style>
+<style id="adminV2Extra">body{margin:0;font-family:Inter,Arial,sans-serif;background:#f4f7fb;color:#1f2937}.admin-shell{display:flex;min-height:100vh}.sidebar{width:220px;background:#fff;border-right:1px solid #e5e7eb;padding:16px 14px;box-sizing:border-box;position:sticky;top:0;height:100vh}.brand-box{display:flex;align-items:center;gap:12px;padding:14px;border-radius:18px;background:linear-gradient(135deg,#eff6ff,#ffffff);border:1px solid #dbeafe;margin-bottom:16px}.brand-logo{width:42px;height:42px;border-radius:14px;background:#2563eb;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800}.brand-title{font-size:16px;font-weight:800;color:#111827}.brand-sub{font-size:12px;color:#6b7280}.side-nav{display:flex;flex-direction:column;gap:8px}.side-nav a{text-decoration:none;color:#374151;padding:12px 14px;border-radius:12px;border:1px solid transparent;font-weight:600}.side-nav a:hover{background:#eff6ff;border-color:#bfdbfe;color:#1d4ed8}.admin-main{flex:1;padding:14px 18px 24px}.topbar{display:flex;justify-content:space-between;align-items:center;gap:12px;background:#fff;border:1px solid #e5e7eb;border-radius:18px;padding:14px 18px;box-shadow:0 10px 30px rgba(15,23,42,.04);margin-bottom:14px}.top-tabs{display:flex;gap:10px;flex-wrap:wrap}.top-tabs a{text-decoration:none;color:#374151;padding:10px 14px;border-radius:10px;font-weight:700}.top-tabs a:hover{background:#eff6ff;color:#1d4ed8}.admin-main .wrap{max-width:none;margin:0;padding:0}.card{background:#fff;border-radius:18px;padding:18px;box-shadow:0 10px 30px rgba(15,23,42,.05);margin-bottom:16px;border:1px solid #e5e7eb}.hero-card{background:linear-gradient(135deg,#0f172a,#2563eb 62%,#60a5fa);color:#fff;border:none}.hero-card .muted,.hero-card a{color:rgba(255,255,255,.88)}.section-card{scroll-margin-top:90px}.section-label{display:inline-flex;align-items:center;padding:4px 10px;border-radius:999px;background:#eff6ff;color:#1d4ed8;font-size:12px;font-weight:700;margin-bottom:10px}@media (max-width:980px){.admin-shell{display:block}.sidebar{position:relative;height:auto;width:auto;border-right:none;border-bottom:1px solid #e5e7eb}.admin-main{padding:12px}.topbar{display:block}.top-tabs{margin-bottom:10px}}</style>
+<style id="adminV2TopbarStyle">.topbar{justify-content:space-between;align-items:center}.topbar-info{display:flex;flex-direction:column;gap:6px}.topbar-title{font-size:18px;font-weight:800;color:#111827}.topbar-meta{font-size:13px;color:#64748b}.topbar-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.topbar-link{text-decoration:none;color:#1d4ed8;background:#eff6ff;border:1px solid #bfdbfe;padding:9px 12px;border-radius:10px;font-weight:700}.topbar-link:hover{background:#dbeafe}</style>
+<style id="adminV2Polish"> body{background:#eef3f8;color:#0f172a} .admin-main{padding:12px 18px 20px} .sidebar{width:196px;background:linear-gradient(180deg,#f8fbff 0%,#f4f7fb 100%);border-right:1px solid #dbe3ef} .brand-box{border-radius:18px;box-shadow:0 8px 20px rgba(37,99,235,.08)} .side-nav a{position:relative;padding:14px 16px;border-radius:14px;color:#334155;font-weight:700;transition:all .18s ease} .side-nav a:hover{transform:translateX(2px)} .topbar{padding:18px 20px;border-radius:20px;border:1px solid #dbe3ef;box-shadow:0 8px 24px rgba(15,23,42,.05)} .topbar-title{font-size:22px;font-weight:800;color:#0f172a} .topbar-meta{font-size:13px;color:#64748b} .topbar-link{height:40px;display:inline-flex;align-items:center;justify-content:center;padding:0 14px;border-radius:12px} .card{border-radius:20px;padding:20px;border:1px solid #e2e8f0;box-shadow:0 8px 24px rgba(15,23,42,.05)} .card h2,.card h3{margin:0 0 18px;color:#0f172a} .section-label{margin-bottom:14px;background:#eef4ff;color:#2563eb} .row{gap:14px} input,select,textarea{background:#fff;border:1px solid #d9e2ef;transition:border-color .15s ease,box-shadow .15s ease} input,select,button{height:44px;box-sizing:border-box} textarea{min-height:128px;padding-top:12px;box-sizing:border-box} input:focus,select:focus,textarea:focus{outline:none;border-color:#3b82f6;box-shadow:0 0 0 3px rgba(59,130,246,.12)} button{border-radius:12px;font-weight:700;box-shadow:0 8px 18px rgba(37,99,235,.18)} button.secondary{background:#64748b;box-shadow:none} table{width:100%;border-collapse:separate;border-spacing:0} thead th{font-size:13px;color:#475569;background:#f8fafc} th,td{padding:14px 10px;border-bottom:1px solid #e9eef5} tbody tr:hover td{background:#f8fbff} tbody tr td:first-child{border-top-left-radius:10px;border-bottom-left-radius:10px} tbody tr td:last-child{border-top-right-radius:10px;border-bottom-right-radius:10px} .muted{color:#64748b} #cardStats{gap:12px} #cardStats > div{border-radius:16px !important;box-shadow:inset 0 1px 0 rgba(255,255,255,.4)} </style>
+<style id="adminV2Formal"> .admin-main{padding:10px 16px 18px} .topbar{min-height:72px;padding:14px 18px;margin-bottom:12px} .topbar-title{font-size:24px;font-weight:800;letter-spacing:.2px} .topbar-meta{font-size:12px} .card{padding:16px 18px;margin-bottom:14px} .card h3{font-size:16px;font-weight:800;margin-bottom:14px} .section-label{font-size:11px;padding:4px 10px} .row{gap:10px} input,select,button{height:42px} textarea{min-height:110px} button{font-size:14px} button.secondary{background:#64748b} table{font-size:14px} thead th{background:#f8fafc;color:#475569;font-weight:700;font-size:12px;text-transform:none} th,td{padding:12px 10px} tbody tr:hover td{background:#f8fbff} .side-nav a{font-size:15px} .wrap>.card{transition:box-shadow .18s ease,border-color .18s ease} .wrap>.card:hover{box-shadow:0 10px 26px rgba(15,23,42,.06);border-color:#d5dfec} #cardStats>div{min-height:74px} #cardStats>div div:last-child{font-size:18px !important;font-weight:800 !important} .topbar-actions .topbar-link{font-size:13px} .muted{font-size:12px;line-height:1.6} </style>
+<style id="adminV2Dense"> .wrap>.card{margin-bottom:12px} .card h3{display:flex;align-items:center;justify-content:space-between} .row{gap:8px} input,select,button{height:40px;font-size:13px} textarea{min-height:96px;font-size:13px} button{padding:0 14px;min-width:88px} button.secondary{background:#64748b} table{font-size:13px} thead th{padding:11px 10px;background:#f7f9fc;color:#475569;font-size:12px;font-weight:700} tbody td{padding:10px 10px} tbody tr td{line-height:1.45} tbody tr:hover td{background:#f8fbff} tbody td button{height:34px;min-width:auto;padding:0 12px;border-radius:10px;font-size:12px;box-shadow:none} #panel-resources .card,#panel-system .card,#panel-config .card{border-radius:18px} #panel-resources .row > *,#panel-config .row > *{min-width:220px} #panel-system .row > *{min-width:160px} #panel-resources table td:last-child,#panel-system table td:last-child{white-space:nowrap} #panel-resources table button,#panel-system table button{margin-right:6px} .status-badge{display:inline-flex;align-items:center;height:26px;padding:0 10px;border-radius:999px;font-size:12px;font-weight:700} .status-ok{background:#ecfdf3;color:#15803d;border:1px solid #bbf7d0} .status-warn{background:#fff7ed;color:#c2410c;border:1px solid #fed7aa} .status-muted{background:#f1f5f9;color:#475569;border:1px solid #cbd5e1} </style>
+<style id="adminV2BadgeCss">.table-badge{display:inline-flex;align-items:center;height:26px;padding:0 10px;border-radius:999px;font-size:12px;font-weight:700;border:1px solid transparent}.badge-ok{background:#ecfdf3;color:#15803d;border-color:#bbf7d0}.badge-warn{background:#fff7ed;color:#c2410c;border-color:#fed7aa}.badge-info{background:#eff6ff;color:#1d4ed8;border-color:#bfdbfe}.badge-muted{background:#f1f5f9;color:#475569;border-color:#cbd5e1}.empty-row td{text-align:center;color:#94a3b8;padding:18px 10px}.table-actions button{margin-right:6px}</style>
+<style id="adminV2FinalPolish">#panel-resources .card:first-of-type .row,#panel-config .card .row,#panel-system .card:first-of-type .row{align-items:center}#panel-resources .card:first-of-type input,#panel-resources .card:first-of-type select,#panel-config input,#panel-config button,#panel-system .card:first-of-type input,#panel-system .card:first-of-type select,#panel-system .card:first-of-type button{height:42px}#panel-resources textarea{min-height:88px}#panel-resources .card:first-of-type button,#panel-config button,#panel-system .card:first-of-type button{min-width:120px;padding:0 18px;border-radius:10px;font-size:13px;font-weight:700}#panel-system button.secondary,#panel-resources button.secondary{height:36px;min-width:auto;padding:0 14px;border-radius:10px;font-size:12px;box-shadow:none}#panel-system .table-actions button,#panel-resources .table-actions button{height:32px;padding:0 12px}#panel-resources thead th,#panel-system thead th{background:#f3f6fb;color:#64748b;font-size:12px;font-weight:800;letter-spacing:.2px}#panel-resources tbody td,#panel-system tbody td{padding:12px 10px;vertical-align:middle}#panel-resources table,#panel-system table{margin-top:4px}#panel-resources .empty-row td,#panel-system .empty-row td{padding:28px 10px;color:#94a3b8;font-size:13px}#panel-resources .card,#panel-system .card{box-shadow:0 6px 18px rgba(15,23,42,.04)}#panel-resources h3,#panel-system h3,#panel-config h3{font-size:15px;margin-bottom:12px}#panel-resources .muted,#panel-system .muted,#panel-config .muted{font-size:12px;line-height:1.55}#panel-resources .table-badge,#panel-system .table-badge{height:24px;padding:0 9px;font-size:11px}#panel-system .card:nth-of-type(2) .row{justify-content:flex-end}</style>
+<style id="adminV2MicroPolish">.topbar-actions .topbar-link{height:36px;padding:0 12px;border-radius:10px;font-size:12px}.topbar-actions{gap:8px}#panel-resources .card:first-of-type .row:last-of-type{align-items:flex-start}#panel-resources .card:first-of-type .row:last-of-type input{flex:1 1 auto}#panel-resources .admin-btn-save-account{flex:0 0 180px;max-width:180px;min-width:180px}#panel-resources .admin-btn-sync-clear,#panel-system .admin-btn-cleanup{height:34px;min-width:auto;padding:0 14px;border-radius:10px;font-size:12px;box-shadow:none}#panel-system .admin-btn-cleanup{min-width:128px}</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <h2 style="margin-top:0;">后台管理</h2>
+      <div id="adminInfo" class="muted">正在验证登录状态...</div>
+      <div style="margin-top:8px;"><a href="/" target="_blank">打开前台首页</a> ｜ <a href="/admin/login">返回后台登录页</a></div>
+    </div>
+
+    <div class="card">
+      <h3>站点统计</h3>
+      <div id="stats" class="muted">加载中...</div>
+        <div id="versionPanel" class="muted" style="margin-top:12px;padding-top:12px;border-top:1px dashed #e5e7eb;">版本信息加载中...</div>
+    </div>
+
+    <div class="card">
+      <h3>站点配置</h3>
+      <div class="row">
+        <input id="siteBuyUrl" placeholder="购买页链接，例如：https://example.com/buy">
+      </div>
+      <div class="row">
+        <input id="siteVideoUrl" placeholder="影视剧链接，例如：https://example.com/video">
+      </div>
+      <div class="row">
+        <input id="siteContactText" placeholder="客服文字，例如：客服微信：xxx / QQ：123456">
+        <button onclick="saveSiteSettings()">保存配置</button>
+      </div>
+      <div class="muted">这里保存的是前台“购买卡密 / 影视剧 / 联系客服”入口配置。购买页和影视剧为跳转链接；联系客服为弹窗显示的文字内容。留空时前台会保持当前默认引导逻辑。</div>
+    </div>
+
+    <div class="card">
+      <h3>制卡</h3>
+      <div class="row">
+        <select id="cardType">
+          <option value="day">天卡</option>
+          <option value="week">周卡</option>
+          <option value="month">月卡</option>
+        </select>
+        <input id="cardCount" type="number" value="1" min="1" max="100" placeholder="数量">
+        <button onclick="createCards()">生成卡密</button>
+      </div>
+      <div id="newCodes" class="muted" style="margin-top:10px;"></div>
+    </div>
+
+    <div class="card">
+      <h3>蓝奏账号 / Cookie 管理</h3>
+      <div class="row">
+        <input id="lzTitle" placeholder="标题，例如：主蓝奏账号">
+        <select id="lzType" onchange="toggleType()">
+          <option value="cookie">Cookie 登录</option>
+          <option value="account">账号密码登录</option>
+        </select>
+      </div>
+      <div class="row">
+        <input id="lzAccount" placeholder="蓝奏账号（账号模式时填写）">
+        <input id="lzPassword" placeholder="蓝奏密码（账号模式时填写）">
+      </div>
+      <div class="row">
+        <textarea id="lzCookie" placeholder="Cookie 内容（Cookie 模式时填写）"></textarea>
+      </div>
+      <div class="row">
+        <input id="lzRemark" placeholder="备注，可选">
+        <button onclick="saveLanzouAccount()">保存账号</button>
+      </div>
+      <div class="muted">建议优先使用 Cookie 模式，更稳。保存后可点击“立即同步”把蓝奏云文件名同步到本站数据库。</div>
+    </div>
+
+    <div class="card">
+      <h3>蓝奏账号列表</h3>
+      <table>
+        <thead>
+          <tr><th>ID</th><th>标题</th><th>类型</th><th>状态</th><th>上次同步</th><th>操作</th></tr>
+        </thead>
+        <tbody id="accountTable"></tbody>
+      </table>
+    </div>
+
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;">
+          <h3 style="margin:0;">同步日志</h3>
+          <button class="secondary" onclick="clearSyncLogs()">清空日志</button>
+        </div>
+        <div style="max-height:280px;overflow:auto;margin-top:12px;">
+          <table>
+            <thead>
+              <tr><th>ID</th><th>账号ID</th><th>状态</th><th>消息</th><th>时间</th></tr>
+            </thead>
+            <tbody id="syncLogTable"></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="card">
+        <h3>卡密统计</h3>
+        <div id="cardStats" class="row" style="margin-top:12px;">
+          <div style="flex:1;min-width:140px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:14px;padding:14px;"><div class="muted small">总卡密</div><div id="cardStatsTotal" style="font-size:24px;font-weight:700;margin-top:6px;">0</div></div>
+          <div style="flex:1;min-width:140px;background:#eff6ff;border:1px solid #bfdbfe;border-radius:14px;padding:14px;"><div class="muted small">未使用</div><div id="cardStatsUnused" style="font-size:24px;font-weight:700;margin-top:6px;color:#1d4ed8;">0</div></div>
+          <div style="flex:1;min-width:140px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:14px;padding:14px;"><div class="muted small">已使用</div><div id="cardStatsUsed" style="font-size:24px;font-weight:700;margin-top:6px;color:#15803d;">0</div></div>
+          <div style="flex:1;min-width:140px;background:#fff7ed;border:1px solid #fed7aa;border-radius:14px;padding:14px;"><div class="muted small">已停用</div><div id="cardStatsDisabled" style="font-size:24px;font-weight:700;margin-top:6px;color:#c2410c;">0</div></div>
+        </div>
+      </div>
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;">
+          <h3 style="margin:0;">卡密管理</h3>
+          <div class="row">
+            <button class="secondary" data-status="used" onclick="cleanupCards(this.dataset.status)">清理已使用</button>
+            <button class="secondary" data-status="disabled" onclick="cleanupCards(this.dataset.status)">清理已停用</button>
+          </div>
+        </div>
+        <table>
+          <thead>
+            <tr><th>ID</th><th>卡密</th><th>类型</th><th>状态</th><th>创建时间</th><th>操作</th></tr>
+          </thead>
+          <tbody id="cardTable"></tbody>
+        </table>
+      </div>
+    <div class="card">
+    <h3>用户列表</h3>
+    <table>
+      <thead>
+        <tr><th>ID</th><th>用户名</th><th>角色</th><th>状态</th><th>会员到期时间</th><th>操作</th></tr>
+      </thead>
+      <tbody id="userTable"></tbody>
+    </table>
+  </div>
+</div>
+
+  <script>
+    async function api(url, options = {}) {
+        const method = String((options && options.method) || "GET").toUpperCase();
+        const finalUrl = method === "GET" ? (url + (url.includes("?") ? "&" : "?") + "_ts=" + Date.now()) : url;
+        const res = await fetch(finalUrl, {
+          cache: "no-store",
+          credentials: "include",
+          headers: { "Content-Type": "application/json", ...(options.headers || {}) },
+          ...options
+        });
+        const data = await res.json().catch(() => ({ message: "接口返回异常" }));
+        if (!res.ok) throw new Error(data.message || ("请求失败，状态码：" + res.status));
+        return data;
+      }
+
+      async function loadMe() {
+        try {
+          const v = await api("/api/admin/version");
+          const versionText = "v" + String(v.version || "未知版本");
+          const releaseDate = String(v.release_date || "-");
+          document.getElementById("adminInfo").innerHTML = "后台管理员已登录 ｜ 当前版本：<b>" + versionText + "</b> ｜ 发布日期：" + releaseDate;
+        } catch (_) {
+          document.getElementById("adminInfo").innerHTML = "后台管理员已登录 ｜ 当前版本信息读取失败";
+        }
+        return true;
+      }
+
+      async function loadStats() {
+        const data = await api("/api/admin/stats");
+        document.getElementById("stats").innerHTML = "用户数：<b>" + data.users + "</b> ｜ 资源数：<b>" + data.resources + "</b> ｜ 卡密数：<b>" + data.cards + "</b>";
+      }
+      async function loadVersionPanel() {
+        try {
+          const v = await api("/api/admin/version");
+          const notes = Array.isArray(v.release_notes) ? v.release_notes : [];
+          const html = [
+            "<div><b>当前版本：</b>v" + String(v.version || "-") + "</div>",
+            "<div style=\"margin-top:4px;\"><b>发布日期：</b>" + String(v.release_date || "-") + "</div>",
+            notes.length ? ("<div style=\"margin-top:8px;\"><b>版本说明：</b><ul style=\"margin:8px 0 0 18px;padding:0;\">" + notes.map(x => "<li>" + String(x) + "</li>").join("") + "</ul></div>") : ""
+          ].join("");
+          document.getElementById("versionPanel").innerHTML = html;
+          if (!document.getElementById("updateCheckBtn")) {
+            document.getElementById("versionPanel").insertAdjacentHTML("beforeend", `<div style="margin-top:10px;"><button id="updateCheckBtn" class="secondary" onclick="checkUpdateInfo()">检查更新</button><div id="updateCheckResult" class="muted" style="margin-top:8px;"></div></div>`);
+          }
+        } catch (_) {
+          document.getElementById("versionPanel").innerHTML = "版本信息读取失败";
+        }
+      }
+      async function loadCardStats() {
+        const data = await api("/api/admin/cards/stats");
+        document.getElementById("cardStatsTotal").innerText = data.total || 0;
+        document.getElementById("cardStatsUnused").innerText = data.unused || 0;
+        document.getElementById("cardStatsUsed").innerText = data.used || 0;
+        document.getElementById("cardStatsDisabled").innerText = data.disabled || 0;
+      }
+
+      async function loadCards() {
+        const data = await api("/api/admin/cards");
+        document.getElementById("cardTable").innerHTML = data.items.map(item =>
+          "<tr>" +
+            "<td>" + item.id + "</td>" +
+            "<td>" + item.code + "</td>" +
+            "<td>" + item.card_type + "</td>" +
+            "<td>" + item.status + "</td>" +
+            "<td>" + (item.created_at || "-") + "</td>" +
+            "<td>" +
+              (item.status === "unused" ? "<button class=\"secondary\" onclick=\"disableCard(" + item.id + ")\">停卡</button> " : "") +
+              "<button class=\"secondary\" onclick=\"deleteCard(" + item.id + ")\">删除</button>" +
+            "</td>" +
+          "</tr>"
+        ).join("");
+      }
+
+      async function disableCard(id) {
+        if (confirm("确定要停用这张卡密 ID=" + id + " 吗？") !== true) return;
+        try {
+          const data = await api("/api/admin/cards/" + id + "/disable", { method: "POST" });
+          alert(data.message);
+          await Promise.all([loadCards(), loadCardStats(), loadStats()]);
+        } catch (e) {
+          alert(e.message);
+        }
+      }
+
+      async function deleteCard(id) {
+        if (confirm("确定要删除这张卡密 ID=" + id + " 吗？此操作不可恢复。") !== true) return;
+        try {
+          const data = await api("/api/admin/cards/" + id, { method: "DELETE" });
+          alert(data.message);
+          await Promise.all([loadCards(), loadCardStats(), loadStats()]);
+        } catch (e) {
+          alert(e.message);
+        }
+      }
+
+      async function cleanupCards(status) {
+        const label = status === "used" ? "已使用" : "已停用";
+        if (confirm("确定要清理所有" + label + "卡密吗？此操作不可恢复。") !== true) return;
+        try {
+          const data = await api("/api/admin/cards/cleanup", {
+            method: "POST",
+            body: JSON.stringify({ status: status })
+          });
+          alert(data.message);
+          await Promise.all([loadCards(), loadCardStats(), loadStats()]);
+        } catch (e) {
+          alert(e.message);
+        }
+      }
+
+      async function createCards() {
+        try {
+          const cardType = document.getElementById("cardType").value;
+          const count = Number(document.getElementById("cardCount").value || 1);
+          const data = await api("/api/admin/cards", {
+            method: "POST",
+            body: JSON.stringify({ cardType: cardType, count: count })
+          });
+          alert(data.message);
+          document.getElementById("newCodes").innerText = data.codes.join("\n");
+          await Promise.all([loadCards(), loadCardStats(), loadStats()]);
+        } catch (e) {
+          alert(e.message);
+        }
+      }
+
+      function toggleType() {
+      const type = document.getElementById('lzType').value;
+      const account = document.getElementById('lzAccount');
+      const password = document.getElementById('lzPassword');
+      const cookie = document.getElementById('lzCookie');
+      if (type === 'cookie') {
+        account.disabled = true;
+        password.disabled = true;
+        cookie.disabled = false;
+      } else {
+        account.disabled = false;
+        password.disabled = false;
+        cookie.disabled = true;
+      }
+    }
+
+    async function saveLanzouAccount() {
+      try {
+        const payload = {
+          title: document.getElementById('lzTitle').value.trim(),
+          loginType: document.getElementById('lzType').value,
+          account: document.getElementById('lzAccount').value.trim(),
+          passwordText: document.getElementById('lzPassword').value,
+          cookieText: document.getElementById('lzCookie').value.trim(),
+          remark: document.getElementById('lzRemark').value.trim()
+        };
+        const data = await api('/api/admin/lanzou-accounts', {
+          method: 'POST',
+          body: JSON.stringify(payload)
+        });
+        alert(data.message);
+        loadAccounts();
+      } catch (e) {
+        alert(e.message);
+      }
+    }
+
+    async function syncAccount(id) {
+      try {
+        const data = await api('/api/admin/lanzou-accounts/' + id + '/sync', {
+          method: 'POST'
+        });
+        alert(data.message + '，共同步 ' + data.total + ' 个文件');
+        loadAccounts();
+        loadSyncLogs();
+        loadStats();
+      } catch (e) {
+        alert(e.message);
+        loadSyncLogs();
+      }
+    }
+
+    async function loadAccounts() {
+      const data = await api("/api/admin/lanzou-accounts");
+      document.getElementById("accountTable").innerHTML = data.items.map(item => `
+        <tr>
+          <td>${item.id}</td>
+          <td>${item.title}</td>
+          <td>${item.login_type}</td>
+          <td>${item.status}</td>
+          <td>${item.last_sync_at || "-"}</td>
+          <td><button onclick="syncAccount(${item.id})">立即同步</button> <button class="secondary" onclick="checkLanzouAccount(${item.id})">检测</button> <button class="secondary" onclick="deleteLanzouAccount(${item.id})">删除</button></td>
+        </tr>
+      `).join("");
+    }
+
+    async function checkLanzouAccount(id) {
+      try {
+        const data = await api("/api/admin/lanzou-accounts/" + id + "/check", { method: "POST" });
+        alert(data.message + "，共检测到 " + data.total + " 个文件");
+        await loadAccounts();
+        await loadSyncLogs();
+      } catch (e) {
+        alert(e.message);
+        await loadSyncLogs();
+      }
+    }
+
+    async function deleteLanzouAccount(id) {
+      if (confirm(`确定要删除蓝奏账号 ID=${id} 吗？相关资源和同步日志也会一起删除。`) !== true) return;
+      try {
+        const data = await api("/api/admin/lanzou-accounts/" + id, { method: "DELETE" });
+        alert(data.message);
+        await loadAccounts();
+        await loadSyncLogs();
+        await loadStats();
+      } catch (e) {
+        alert(e.message);
+      }
+    }
+
+    async function clearSyncLogs() {
+      if (confirm("确定要清空所有同步日志吗？") !== true) return;
+      try {
+        const data = await api("/api/admin/sync-logs", { method: "DELETE" });
+        alert(data.message);
+        await loadSyncLogs();
+      } catch (e) {
+        alert(e.message);
+      }
+    }
+
+    async function loadSyncLogs() {
+      const data = await api('/api/admin/sync-logs');
+      document.getElementById('syncLogTable').innerHTML = data.items.map(item => `
+        <tr>
+          <td>${item.id}</td>
+          <td>${item.account_id || '-'}</td>
+          <td>${item.status}</td>
+          <td>${item.message || ''}</td>
+          <td>${item.created_at}</td>
+        </tr>
+      `).join('');
+    }
+
+    async function loadUsers() {
+      const data = await api("/api/admin/users");
+      document.getElementById("userTable").innerHTML = data.items.map(item => `
+        <tr>
+          <td>${item.id}</td>
+          <td>${item.username}</td>
+          <td>${item.role}</td>
+          <td>${item.status === 1 ? "正常" : "停用"}</td>
+          <td>${item.membership_expire_at || "-"}</td>
+          <td>${item.role === "admin" ? "-" : `<button class="secondary" onclick="toggleUserStatus(${item.id})">${item.status === 1 ? "停用" : "恢复"}</button> <button class="secondary" onclick="extendUser(${item.id})">加时</button> <button class="secondary" onclick="deleteUser(${item.id})">删除</button>`}</td>
+        </tr>
+      `).join("");
+    }
+
+    async function extendUser(id) {
+      const value = prompt("请输入加时时长（小时），例如 24、168、720", "24");
+      if (value === null) return;
+      const hours = Number(value);
+      if (!Number.isFinite(hours) || hours <= 0) {
+        alert("加时时长必须大于0");
+        return;
+      }
+      try {
+        const data = await api("/api/admin/users/" + id + "/extend", {
+          method: "POST",
+          body: JSON.stringify({ hours })
+        });
+        alert(data.message);
+        await loadUsers();
+      } catch (e) {
+        alert(e.message);
+      }
+    }
+
+    async function toggleUserStatus(id) {
+      try {
+        const data = await api("/api/admin/users/" + id + "/toggle-status", { method: "POST" });
+        alert(data.message);
+        await loadUsers();
+      } catch (e) {
+        alert(e.message);
+      }
+    }
+
+    async function deleteUser(id) {
+      if (confirm(`确定要删除用户 ID=${id} 吗？此操作不可恢复。`) !== true) return;
+      try {
+        const data = await api("/api/admin/users/" + id, { method: "DELETE" });
+        alert(data.message);
+        await loadUsers();
+        await loadStats();
+      } catch (e) {
+        alert(e.message);
+      }
+    }
+
+    async function checkUpdateInfo() {
+        try {
+          const v = await api("/api/admin/version");
+          const el = document.getElementById("updateCheckResult");
+          if (el) el.innerHTML = "当前版本：v" + String(v.version || "-") + " ｜ 发布日期：" + String(v.release_date || "-") + " ｜ 暂未配置远程更新源";
+        } catch (e) {
+          const el = document.getElementById("updateCheckResult");
+          if (el) el.innerHTML = "检查更新失败：" + (e && e.message ? e.message : "未知错误");
+        }
+      }
+
+      async function loadSiteSettings() {
+      const data = await api("/api/admin/site-settings");
+      document.getElementById("siteBuyUrl").value = data.buyUrl || "";
+      document.getElementById("siteVideoUrl").value = data.videoUrl || "";
+      document.getElementById("siteContactText").value = data.contactText || "";
+    }
+
+    async function saveSiteSettings() {
+      try {
+        const payload = {
+          buyUrl: document.getElementById("siteBuyUrl").value.trim(),
+          videoUrl: document.getElementById("siteVideoUrl").value.trim(),
+          contactText: document.getElementById("siteContactText").value.trim()
+        };
+        const data = await api("/api/admin/site-settings", {
+          method: "POST",
+          body: JSON.stringify(payload)
+        });
+        alert(data.message);
+      } catch (e) {
+        alert(e.message);
+      }
+    }
+
+    (async function init() {
+        toggleType();
+        const ok = await loadMe();
+        if (!ok) return;
+        await loadStats();
+        await loadVersionPanel();
+        await loadSiteSettings();
+        await loadCards();
+        await loadCardStats();
+        await loadAccounts();
+        await loadSyncLogs();
+        await loadUsers();
+      })();
+      window.addEventListener("load", function () {
+        setTimeout(function () {
+          loadStats().catch(console.error);
+          loadVersionPanel().catch(console.error);
+          loadSiteSettings().catch(console.error);
+          loadCards().catch(console.error);
+          loadCardStats().catch(console.error);
+          loadAccounts().catch(console.error);
+          loadSyncLogs().catch(console.error);
+          loadUsers().catch(console.error);
+        }, 300);
+      });
+  </script>
+<script id="adminV2Boot">document.addEventListener("DOMContentLoaded",function(){if(document.querySelector("body > .admin-shell"))return;const wrap=document.querySelector("body > .wrap");if(!wrap)return;const shell=document.createElement("div");shell.className="admin-shell";shell.innerHTML="<aside class=\"sidebar\"><div class=\"brand-box\"><div class=\"brand-logo\">LZ</div><div><div class=\"brand-title\">蓝奏后台</div><div class=\"brand-sub\">Admin Center</div></div></div><nav class=\"side-nav\"><a href=\"#panel-overview\">概况</a><a href=\"#panel-resources\">资源</a><a href=\"#panel-system\">系统</a><a href=\"#panel-config\">配置</a></nav></aside><main class=\"admin-main\"><div class=\"topbar\"><div class=\"top-tabs\"><a href=\"#panel-overview\">概况</a><a href=\"#panel-resources\">资源</a><a href=\"#panel-system\">系统</a><a href=\"#panel-config\">配置</a></div><div class=\"muted\">后台模块已分区显示</div></div></main>";wrap.parentNode.insertBefore(shell,wrap);shell.querySelector(".admin-main").appendChild(wrap);const cards=Array.from(wrap.children).filter(n=>n.classList&&n.classList.contains("card"));const mark=(title,id,label,hero)=>{const card=cards.find(c=>{const h=c.querySelector("h2,h3");return h&&h.textContent.trim()===title;});if(!card)return;card.id=id;card.classList.add(hero?"hero-card":"section-card");if(!card.querySelector(".section-label")){const tag=document.createElement("div");tag.className="section-label";tag.textContent=label;card.insertBefore(tag,card.firstChild);}};mark("后台管理","panel-overview","概况",true);mark("蓝奏账号 / Cookie 管理","panel-resources","资源",false);mark("制卡","panel-system","系统",false);mark("站点配置","panel-config","配置",false);});</script>
+<script id="adminV2Tabs">document.addEventListener("DOMContentLoaded",function(){const groups={"panel-overview":["后台管理","站点统计","卡密统计"],"panel-resources":["蓝奏账号 / Cookie 管理","蓝奏账号列表","同步日志"],"panel-system":["制卡","卡密管理","用户列表"],"panel-config":["站点配置"]};const cards=Array.from(document.querySelectorAll("body > .admin-shell .wrap > .card"));cards.forEach(function(c){const h=c.querySelector("h2,h3");const t=h&&h.textContent?h.textContent.trim():"";Object.keys(groups).forEach(function(g){if(groups[g].includes(t)){c.dataset.group=g;if(!document.getElementById(g))c.id=g;}});});const links=Array.from(document.querySelectorAll(".side-nav a,.top-tabs a"));function apply(){const target=(location.hash||"#panel-overview").replace("#","");cards.forEach(function(c){c.style.display=(c.dataset.group===target)?"":"none";});links.forEach(function(a){const on=a.getAttribute("href")==="#"+target;a.style.background=on?"#eff6ff":"";a.style.color=on?"#1d4ed8":"";});window.scrollTo(0,0);}links.forEach(function(a){a.addEventListener("click",function(){setTimeout(apply,0);});});window.addEventListener("hashchange",apply);setTimeout(apply,0);});</script>
+<script id="adminV2TopbarPatch">document.addEventListener("DOMContentLoaded",function(){const bar=document.querySelector(".topbar");if(!bar)return;bar.innerHTML="<div class=\"topbar-info\"><div class=\"topbar-title\" id=\"topbarTitle\">后台管理中心</div><div class=\"topbar-meta\" id=\"topbarMeta\">左侧为唯一主导航</div></div><div class=\"topbar-actions\"><a class=\"topbar-link\" href=\"/admin/dashboard\" target=\"_blank\">正式后台</a><a class=\"topbar-link\" href=\"/\" target=\"_blank\">前台首页</a></div>";const title=document.getElementById("topbarTitle");const meta=document.getElementById("topbarMeta");const map={"#panel-overview":["概况总览","查看站点统计与卡密统计"],"#panel-resources":["资源管理","管理蓝奏账号与同步日志"],"#panel-system":["系统管理","管理制卡、卡密与用户"],"#panel-config":["站点配置","维护购买页、影视剧与客服配置"]};function refresh(){const key=location.hash||"#panel-overview";const item=map[key]||map["#panel-overview"];if(title)title.textContent=item[0];if(meta)meta.textContent="后台 / "+item[0]+" · "+item[1];}window.addEventListener("hashchange",refresh);setTimeout(refresh,0);});</script>
+<script id="adminV2Cleanup">document.addEventListener("DOMContentLoaded",function(){var cards=Array.from(document.querySelectorAll("body > .admin-shell .wrap > .card"));var hero=cards.find(function(c){var h=c.querySelector("h2,h3");return h&&h.textContent.trim()==="后台管理";});if(hero)hero.remove();});</script>
+<script id="adminV2TablePatch">(function(){function badge(t,c){return "<span class=\"table-badge "+c+"\">"+t+"</span>";} function setBadge(td,text,cls){if(td == null || td.querySelector(".table-badge")) return; td.innerHTML=badge(text,cls);} function ensureEmpty(tb,col,msg){if(tb == null) return; var rows=Array.from(tb.querySelectorAll("tr")).filter(function(r){return r.classList.contains("empty-row") === false && r.children.length > 0;}); if(rows.length === 0 && tb.querySelector(".empty-row") == null){tb.innerHTML="<tr class=\"empty-row\"><td colspan=\""+col+"\">"+msg+"</td></tr>";}} function paint(){var tb=document.getElementById("accountTable"); if(tb){ensureEmpty(tb,6,"暂无账号数据"); Array.from(tb.querySelectorAll("tr")).forEach(function(r){if(r.classList.contains("empty-row")) return; var td=r.children; if(td[2]) setBadge(td[2], td[2].textContent.trim()==="account" ? "账号登录" : "Cookie 登录", "badge-info"); if(td[3]) setBadge(td[3], td[3].textContent.trim()==="1" ? "正常" : "异常", td[3].textContent.trim()==="1" ? "badge-ok" : "badge-warn"); if(td[5]) td[5].classList.add("table-actions");});} tb=document.getElementById("syncLogTable"); if(tb){ensureEmpty(tb,5,"暂无同步日志"); Array.from(tb.querySelectorAll("tr")).forEach(function(r){if(r.classList.contains("empty-row")) return; var td=r.children; if(td[2]){var v=td[2].textContent.trim().toLowerCase(); setBadge(td[2], td[2].textContent.trim(), v==="success" ? "badge-ok" : "badge-warn");}});} tb=document.getElementById("cardTable"); if(tb){ensureEmpty(tb,6,"暂无卡密数据"); Array.from(tb.querySelectorAll("tr")).forEach(function(r){if(r.classList.contains("empty-row")) return; var td=r.children; if(td[2]){var m={day:"天卡",week:"周卡",month:"月卡"}; var raw=td[2].textContent.trim(); setBadge(td[2], m[raw] || raw, "badge-info");} if(td[3]){var raw=td[3].textContent.trim(); var txt=raw==="unused" ? "未使用" : raw==="used" ? "已使用" : raw==="disabled" ? "已停用" : raw; var cls=raw==="unused" ? "badge-info" : raw==="used" ? "badge-ok" : "badge-warn"; setBadge(td[3], txt, cls);} if(td[5]) td[5].classList.add("table-actions");});} tb=document.getElementById("userTable"); if(tb){ensureEmpty(tb,6,"暂无用户数据"); Array.from(tb.querySelectorAll("tr")).forEach(function(r){if(r.classList.contains("empty-row")) return; var td=r.children; if(td[2]) setBadge(td[2], td[2].textContent.trim(), td[2].textContent.trim()==="admin" ? "badge-muted" : "badge-info"); if(td[3]) setBadge(td[3], td[3].textContent.trim(), td[3].textContent.trim()==="正常" ? "badge-ok" : "badge-warn"); if(td[5]) td[5].classList.add("table-actions");});}} document.addEventListener("DOMContentLoaded",function(){paint(); new MutationObserver(function(){paint();}).observe(document.body,{childList:true,subtree:true});});})();</script>
+<script id="adminV2MicroPatch">document.addEventListener("DOMContentLoaded",function(){Array.from(document.querySelectorAll("button")).forEach(function(b){var t=(b.textContent||"").trim(); if(t==="保存账号") b.classList.add("admin-btn-save-account"); if(t==="清空日志") b.classList.add("admin-btn-sync-clear"); if(t==="清理已使用" || t==="清理已停用") b.classList.add("admin-btn-cleanup");});});</script>
+</body>
+</html>
+

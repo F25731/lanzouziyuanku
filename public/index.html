@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>影书搜资源站</title>
+  <style>
+      :root { --bg1:#0f172a; --bg2:#1e293b; --line:rgba(148,163,184,.22); --card:rgba(255,255,255,.96); --text:#0f172a; --muted:#64748b; --blue:#2563eb; --blue2:#1d4ed8; --gold:#f59e0b; } * { box-sizing:border-box; } body { font-family: Inter, -apple-system, BlinkMacSystemFont, Segoe UI, PingFang SC, Microsoft YaHei, sans-serif; margin:0; color:var(--text); background: radial-gradient(circle at top left, rgba(59,130,246,.18), transparent 32%), radial-gradient(circle at top right, rgba(245,158,11,.16), transparent 28%), linear-gradient(180deg, #eef4ff 0%, #f8fbff 38%, #f5f7fb 100%); } .wrap { max-width:1180px; margin:0 auto; padding:28px 20px 48px; } .card { background:var(--card); border:1px solid var(--line); border-radius:22px; padding:22px; box-shadow:0 18px 50px rgba(15,23,42,.08); margin-bottom:18px; backdrop-filter:blur(10px); } .row { display:flex; gap:12px; flex-wrap:wrap; } input, button, select, textarea { min-height:46px; padding:12px 14px; border-radius:14px; border:1px solid #d7dfef; font-size:14px; transition:.2s ease; } input, textarea, select { flex:1; min-width:220px; background:#fff; color:#0f172a; box-shadow: inset 0 1px 2px rgba(15,23,42,.03); } input:focus, textarea:focus, select:focus { outline:none; border-color:#93c5fd; box-shadow:0 0 0 4px rgba(59,130,246,.13); } button { cursor:pointer; border:none; color:#fff; background:linear-gradient(135deg, var(--blue), var(--blue2)); box-shadow:0 12px 24px rgba(37,99,235,.22); font-weight:700; letter-spacing:.2px; } button:hover { transform:translateY(-1px); box-shadow:0 16px 28px rgba(37,99,235,.28); } button.secondary { background:linear-gradient(135deg, #334155, #475569); box-shadow:0 10px 22px rgba(51,65,85,.18); } .muted { color:var(--muted); font-size:13px; } .small { font-size:12px; } .grid { display:grid; grid-template-columns:1.08fr .92fr; gap:18px; } @media (max-width:900px) { .grid { grid-template-columns:1fr; } .wrap { padding:18px 14px 34px; } .card { border-radius:18px; padding:18px; } } .item { padding:16px 0; border-bottom:1px solid #e8eef7; } .item:last-child { border-bottom:none; } .topbar { display:flex; justify-content:space-between; align-items:flex-start; gap:14px; flex-wrap:wrap; } .badge { display:inline-flex; align-items:center; gap:6px; padding:6px 12px; border-radius:999px; background:rgba(255,255,255,.16); color:#fff; font-size:12px; border:1px solid rgba(255,255,255,.18); } a { color:#1d4ed8; text-decoration:none; } .captcha-box { display:flex; gap:12px; align-items:center; } .captcha-svg { width:120px; height:42px; border:1px solid #d9dbe7; border-radius:12px; background:#fff; display:flex; align-items:center; justify-content:center; overflow:hidden; } .wrap > .card:first-child { position:relative; overflow:hidden; background:linear-gradient(135deg, #0f172a 0%, #1d4ed8 55%, #3b82f6 100%); color:#fff; border:none; padding:28px; box-shadow:0 24px 70px rgba(37,99,235,.22); } .wrap > .card:first-child::after { content:""; position:absolute; right:-60px; top:-60px; width:220px; height:220px; background:radial-gradient(circle, rgba(255,255,255,.25), transparent 65%); } .wrap > .card:first-child h2 { margin:0; font-size:34px; letter-spacing:.4px; } .wrap > .card:first-child .muted, .wrap > .card:first-child #userPanel, .wrap > .card:first-child .small { color:rgba(255,255,255,.86) !important; } #userPanel { min-width:240px; padding:14px 16px; border-radius:18px; background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.15); backdrop-filter:blur(8px); } .grid .card h3, .wrap > .card:nth-of-type(3) h3, .wrap > .card:nth-of-type(4) h3 { margin:0 0 16px; font-size:24px; } .grid .card { min-height:100%; } .grid .card:first-child { background:linear-gradient(180deg, #ffffff 0%, #f8fbff 100%); } .grid .card:last-child { background:linear-gradient(180deg, #fffaf0 0%, #ffffff 100%); } .grid .card:last-child h3::after { content:" 热门入口"; font-size:12px; color:#b45309; background:#ffedd5; border-radius:999px; padding:4px 8px; margin-left:8px; vertical-align:middle; } .wrap > .card:nth-of-type(3) { background:linear-gradient(135deg, rgba(37,99,235,.08), rgba(255,255,255,.98) 34%, rgba(245,158,11,.08)); border:1px solid rgba(37,99,235,.16); } .wrap > .card:nth-of-type(3) .row button { min-width:132px; } .wrap > .card:nth-of-type(4) { padding:24px; } .wrap > .card:nth-of-type(4) .row { align-items:center; } .wrap > .card:nth-of-type(4) input { min-height:54px; font-size:15px; } .wrap > .card:nth-of-type(4) button { min-width:140px; min-height:54px; } #results { margin-top:10px; } #results .item { padding:16px; border:1px solid #e8eef7; border-radius:16px; background:#fbfdff; margin-bottom:12px; box-shadow:0 8px 20px rgba(15,23,42,.04); } #results .item b { font-size:16px; } 
+    </style>
+<style id="frontV2MobileStyle">.frontV2Layout{display:block;max-width:820px;margin:18px auto 0}.frontV2Main,.frontV2Side{width:100%}.frontV2Side{display:none}.wrap{max-width:920px}.wrap>.card:first-child{padding:24px 22px}.wrap>.card:first-child .topbar{align-items:center}.wrap>.card:first-child h2{font-size:32px}.wrap>.card:first-child .muted{font-size:14px}#userPanel{padding:10px 14px;border-radius:16px}#frontMenuBtn{width:48px;height:48px;min-height:48px;border-radius:14px;padding:0;font-size:24px;line-height:1;box-shadow:none;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.18)}.frontMobileSearchCard{padding:24px 20px 22px;border-radius:30px;background:rgba(255,255,255,.96)}.frontMobileTitle{text-align:center;font-size:38px;font-weight:800;margin:8px 0 10px}.frontMobileNotice{margin:0 auto 18px;padding:20px 18px;border-radius:24px;background:linear-gradient(135deg,rgba(255,111,97,.12),rgba(255,255,255,.96));border:1px solid rgba(255,111,97,.18);text-align:center;font-size:18px;font-weight:800;color:#ff6b6b}.frontMobileInput{display:flex;align-items:center;gap:0;border:4px solid rgba(255,107,107,.8);border-radius:999px;overflow:hidden;background:#fff;box-shadow:0 14px 30px rgba(255,107,107,.14)}.frontMobileIcon{width:98px;min-width:98px;display:flex;align-items:center;justify-content:center;font-size:36px;background:linear-gradient(135deg,#ff8f6b,#ff6b6b);color:#1d4ed8}.frontMobileInput input{border:none;box-shadow:none;min-height:74px;border-radius:0;font-size:17px;min-width:0}.frontMobileInput button{display:none}.frontMobileSwitchHint{margin:18px auto 0;max-width:max-content;padding:12px 24px;border-radius:999px;background:rgba(255,107,107,.12);color:#ff6b6b;font-size:15px;font-weight:700}.frontMobileActions{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:22px}.frontMobileActions button{min-height:76px;border-radius:24px;font-size:18px;box-shadow:0 18px 34px rgba(15,23,42,.12)}.frontMobileActions .videoBtn{background:linear-gradient(135deg,#ff8f6b,#ff6b6b)}.frontMobileActions .novelBtn{background:linear-gradient(135deg,#4ea7ff,#2d7ef7)}.frontMobileTips{margin-top:22px;padding:18px;border-radius:28px;background:linear-gradient(135deg,#f5f7ff,#fff7fb);border-left:10px solid rgba(255,107,107,.88)}.frontMobileTips .tip{padding:22px 18px;border-radius:22px;border:1px solid rgba(255,107,107,.22);color:#c2410c;background:rgba(255,255,255,.84);font-size:16px;line-height:1.8}.frontMobileTips .tip+.tip{margin-top:16px}#searchMeta{margin:18px 0 10px;padding:12px 14px;border-radius:14px;background:#f8fbff;border:1px solid #e6edf8}#results{margin-top:8px}.frontV2Results{display:grid;grid-template-columns:1fr;gap:12px}#results .item{padding:18px;border-radius:22px;background:#fff;border:1px solid #e8eef7;box-shadow:0 10px 24px rgba(15,23,42,.05)}.frontDrawerMask{position:fixed;inset:0;background:rgba(15,23,42,.45);opacity:0;pointer-events:none;transition:.25s;z-index:998}.frontDrawer{position:fixed;top:0;right:0;width:min(88vw,420px);height:100vh;background:#fff;box-shadow:-18px 0 40px rgba(15,23,42,.18);transform:translateX(100%);transition:.25s;z-index:999;padding:18px 16px 22px;overflow:auto}.frontDrawer.open{transform:translateX(0)}.frontDrawerMask.open{opacity:1;pointer-events:auto}.frontDrawerHead{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}.frontDrawerHead h3{margin:0;font-size:26px}#frontDrawerClose{width:42px;height:42px;min-height:42px;border-radius:12px;padding:0;font-size:24px;box-shadow:none;background:#eff6ff;color:#1d4ed8}.frontDrawer .card{margin-bottom:14px;border-radius:20px;padding:18px}.frontDrawer #authGrid{display:flex;flex-direction:column;gap:14px;max-width:none!important;margin:0!important}.frontDrawer #authGrid>.card{margin:0}.frontDrawer #memberServiceWrap{display:none!important}.frontDrawer #userCenterActions{display:grid;grid-template-columns:1fr 1fr;gap:10px}.frontDrawer #userCenterActions button{width:100%}@media (max-width:780px){.wrap{padding:16px 14px 34px}.wrap>.card:first-child{padding:20px 18px}.wrap>.card:first-child h2{font-size:28px}.frontMobileTitle{font-size:30px}.frontMobileNotice{font-size:16px;padding:18px 14px}.frontMobileInput{border-width:3px}.frontMobileIcon{width:76px;min-width:76px;font-size:30px}.frontMobileInput input{min-height:66px;font-size:16px}.frontMobileActions{gap:14px}.frontMobileActions button{min-height:68px;font-size:16px;border-radius:20px}.frontMobileTips .tip{font-size:15px;line-height:1.7}}</style>
+<style id="frontDrawerFix">.frontV2Layout{display:block!important;max-width:820px;margin:18px auto 0}.frontV2Side{display:none!important}.frontV2Main{width:100%!important}.frontDrawerMask{position:fixed;inset:0;background:rgba(15,23,42,.45);opacity:0;pointer-events:none;transition:.2s;z-index:9998}.frontDrawerMask.open{opacity:1;pointer-events:auto}.frontDrawer{position:fixed;top:0;right:0;width:min(88vw,420px);height:100vh;background:#fff;box-shadow:-18px 0 40px rgba(15,23,42,.18);transform:translateX(100%);transition:.2s;z-index:9999;padding:18px 16px 22px;overflow:auto}.frontDrawer.open{transform:translateX(0)}.frontDrawerHead{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}.frontDrawerHead h3{margin:0;font-size:24px}.frontDrawerClose{width:42px;height:42px;border-radius:12px;border:none;background:#eff6ff;color:#1d4ed8;font-size:24px}.frontDrawer #authGrid{display:flex;flex-direction:column;gap:14px;max-width:none!important;margin:0!important}.frontDrawer #authGrid>.card{margin:0}.frontDrawer #memberServiceWrap{display:none!important}</style>
+<style id="frontDrawerClickFix">#frontMenuBtn{position:relative;z-index:10020;pointer-events:auto}.frontDrawer{z-index:10010}.frontDrawerMask{z-index:10000}</style>
+<style id="frontDrawerContentFix">#frontDrawerUserInfo{margin-bottom:14px;padding:16px 16px 14px;border-radius:20px;background:linear-gradient(135deg,#eff6ff,#f8fbff);border:1px solid #dbeafe;box-shadow:0 8px 20px rgba(37,99,235,.08)}#frontDrawerUserInfo .drawer-title{font-size:18px;font-weight:800;margin-bottom:8px;color:#0f172a}#frontDrawerUserInfo .drawer-body{font-size:13px;color:#475569;line-height:1.7}.frontDrawer #userCenterActions{grid-template-columns:1fr!important}.frontDrawer #userCenterActions button{width:100%!important}</style>\n<style id="frontV2TextTuning">#userPanel{display:none!important}.wrap>.card:first-child .topbar{justify-content:space-between}.wrap>.card:first-child .topbar>div:first-child{max-width:calc(100% - 84px)}.frontMobileTitle{font-size:20px!important;line-height:1.7!important;font-weight:800!important;max-width:92%;margin:8px auto 16px!important}.frontMobileNotice{font-size:16px!important}</style>
+<style id="frontFinalRoundPolish">body{overflow-x:hidden}.wrap{max-width:920px}.wrap>.card:first-child{border-radius:28px;box-shadow:0 18px 40px rgba(15,23,42,.10);margin-bottom:18px}.wrap>.card:first-child h2{font-size:26px!important;letter-spacing:.3px}.wrap>.card:first-child .muted{font-size:13px!important;opacity:.92}.frontMobileSearchCard{box-shadow:0 22px 48px rgba(15,23,42,.08);border-radius:32px}.frontMobileTitle{font-size:18px!important;line-height:1.8!important;max-width:94%!important}.frontMobileNotice{font-size:15px!important}.frontMobileTips .tip{background:#fff;border-color:rgba(255,107,107,.18)}#searchMeta:empty,#results:empty{display:none!important}.frontDrawer{width:min(86vw,390px)!important;padding:16px 14px 20px!important;background:#f8fbff}.frontDrawerHead{padding-bottom:12px;border-bottom:1px solid #e5e7eb;margin-bottom:14px}.frontDrawer .card{background:#fff;border:1px solid #e7edf6;box-shadow:none;border-radius:18px}.frontDrawer #userCenterSummary{margin:10px 0 12px!important;padding:10px 12px;background:#f8fbff;border:1px solid #e5edf8;border-radius:12px;color:#475569}.frontDrawer #userCenterActions button{min-height:46px;border-radius:14px}.frontDrawer input{min-height:44px;border-radius:12px}.frontDrawer button.secondary{background:#42536d}#frontDrawerUserInfo{padding:14px 14px 12px!important;border-radius:18px!important}</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <div class="topbar">
+        <div>
+          <h2 style="margin:0;">蓝奏云资源站</h2>
+          <div class="muted">一站式资源搜索</div>
+        </div>
+        <div id="userPanel" class="muted">未登录</div>
+      </div>
+    </div>
+
+    <div class="grid" id="authGrid">
+        <div class="card" id="authLoginWrap">
+        <h3>登录 / 注册</h3>
+        <div class="row"><input id="username" placeholder="用户名，至少 3 位"></div>
+        <div class="row"><input id="password" type="password" placeholder="密码，至少 6 位"></div>
+        <div class="row captcha-box">
+          <input id="captcha" placeholder="输入验证码" maxlength="4" style="max-width:180px;min-width:180px;">
+          <div id="captchaSvg" class="captcha-svg"></div>
+          <button class="secondary" onclick="loadCaptcha()" type="button">刷新验证码</button>
+        </div>
+        <div class="row">
+          <button onclick="registerUser()">注册</button>
+          <button class="secondary" onclick="loginUser()">登录</button>
+          <button class="secondary" onclick="logoutUser()">退出</button>
+        </div>
+        <div class="muted small">新用户注册后会自动赠送 1 天会员。注册必须输入验证码。</div>
+      </div>
+
+      <div class="card" id="redeemCardWrap" style="display:none;">
+        <h3>用户中心</h3>
+          <div id="userCenterSummary" class="muted" style="margin:-4px 0 14px;">已登录，可在这里查看会员状态、兑换卡密和进入服务入口。</div>
+          <div class="row" id="userCenterActions" style="margin:0 0 12px;">
+            <button id="buyEntryBtn2" onclick="goToRedeem()" style="display:none;">购买卡密</button>
+            <button class="secondary" onclick="goToVideo()">影视剧</button>
+            <button class="secondary" onclick="contactService()">联系客服</button>
+            <button class="secondary" onclick="logoutUser()">退出登录</button>
+          </div>
+        <div class="row"><input id="cardCode" placeholder="输入天卡 / 周卡 / 月卡卡密"></div>
+        <div class="row"><button onclick="redeemCard()">立即兑换</button></div>
+        <div class="muted small">兑换成功后，会员时间会自动顺延</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>会员服务</h3>
+      <div id="serviceNotice" class="muted" style="margin-bottom:10px;">未登录可先搜索资源、查看影视剧或联系客服，登录后可购买卡密并兑换会员。</div>
+      <div class="row">
+        <button id="buyEntryBtn" onclick="goToRedeem()" style="display:none;">购买卡密</button>
+        <button class="secondary" onclick="goToVideo()">影视剧</button>
+        <button class="secondary" onclick="contactService()">联系客服</button>
+      </div>
+      <div class="muted small">登录后可购买卡密并兑换会员，未登录时可先搜索资源、查看影视剧或联系客服。</div>
+    </div>
+
+    <div class="card">
+      <h3>资源搜索</h3>
+      <div class="row">
+        <input id="keyword" placeholder="输入文件名关键字，例如：教程 / 安装包 / 软件名">
+        <button onclick="searchResources()">搜索</button>
+      </div>
+      <div id="searchMeta" class="muted"></div>
+      <div id="results"></div>
+    </div>
+
+  </div>
+
+  <script>
+    let currentUser = null;
+    let currentCaptchaToken = "";
+    let SITE_BUY_URL = "";
+    let SITE_VIDEO_URL = "";
+    let SITE_CONTACT_TEXT = "客服微信 / QQ / Telegram";
+
+    async function api(url, options = {}) {
+      const res = await fetch(url, {
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        ...options
+      });
+      const data = await res.json().catch(() => ({ message: '接口返回异常' }));
+      if (!res.ok) throw new Error(data.message || '请求失败');
+      return data;
+    }
+
+    async function loadSiteConfig() {
+      try {
+        const data = await api("/api/site-config");
+        SITE_BUY_URL = String(data.buyUrl || "").trim();
+        SITE_VIDEO_URL = String(data.videoUrl || "").trim();
+        SITE_CONTACT_TEXT = String(data.contactText || "客服微信 / QQ / Telegram").trim() || "客服微信 / QQ / Telegram";
+      } catch (_) {}
+    }
+
+    function updateLandingState() {
+        const grid = document.getElementById("authGrid");
+        const loginWrap = document.getElementById("authLoginWrap");
+        const redeemWrap = document.getElementById("redeemCardWrap");
+        const buyEntryBtn = document.getElementById("buyEntryBtn");
+          const buyEntryBtn2 = document.getElementById("buyEntryBtn2");
+          const memberServiceWrap = document.getElementById("memberServiceWrap");
+        const serviceNotice = document.getElementById("serviceNotice");
+        const loggedIn = !!currentUser;
+        if (grid) {
+          grid.style.gridTemplateColumns = "1fr";
+          grid.style.maxWidth = "640px";
+          grid.style.margin = "0 auto 18px";
+        }
+        if (loginWrap) loginWrap.style.display = loggedIn ? "none" : "";
+        if (redeemWrap) redeemWrap.style.display = loggedIn ? "" : "none";
+        if (buyEntryBtn) buyEntryBtn.style.display = loggedIn ? "" : "none";
+          if (buyEntryBtn2) buyEntryBtn2.style.display = loggedIn ? "" : "none";
+          if (memberServiceWrap) memberServiceWrap.style.display = loggedIn ? "none" : "";
+        if (serviceNotice) serviceNotice.textContent = loggedIn ? "已登录，可购买卡密并兑换会员；影视剧和联系客服可继续直接使用。" : "未登录可先搜索资源、查看影视剧或联系客服，登录后可购买卡密并兑换会员。";
+      }
+
+      function formatExpireAt(value) {
+        const v = String(value || "").trim();
+        if (!v) return "无";
+        return v.replace("T", " ").replace(".000Z", "").slice(0, 16);
+      }
+
+      function renderUser(user) {
+        currentUser = user;
+        updateLandingState();
+        const el = document.getElementById('userPanel');
+      if (!user) {
+        el.innerHTML = '未登录';
+        return;
+      }
+      const badge = user.membershipActive
+        ? '<span class="badge">会员有效</span>'
+        : '<span class="badge" style="background:#f1f5f9;color:#475569;">普通用户</span>';
+      el.innerHTML = `
+        <div><b>${user.username}</b> ${badge}</div>
+        <div class="small muted">角色：${user.role}｜到期：${user.membershipExpireAt || '无'}</div>
+      `;
+    }
+
+    async function loadMe() {
+      const data = await api('/api/me');
+      renderUser(data.user);
+    }
+
+    async function loadCaptcha() {
+      const data = await api('/api/captcha?ts=' + Date.now(), { cache: 'no-store' });
+      currentCaptchaToken = data.token || '';
+      document.getElementById('captchaSvg').innerHTML = data.svg;
+    }
+
+    async function registerUser() {
+      try {
+        const username = document.getElementById('username').value.trim();
+        const password = document.getElementById('password').value;
+        const captcha = document.getElementById('captcha').value.trim();
+        const data = await api('/api/register', {
+          method: 'POST',
+          body: JSON.stringify({ username, password, captcha, captchaToken: currentCaptchaToken })
+        });
+        alert(data.message);
+        document.getElementById('captcha').value = '';
+        renderUser(data.user);
+          document.getElementById("username").value = "";
+          document.getElementById("password").value = "";
+          document.getElementById("captcha").value = "";
+          const redeemPanel = document.getElementById("redeemCardWrap");
+          if (redeemPanel) redeemPanel.scrollIntoView({ behavior: "smooth", block: "start" });
+          loadCaptcha();
+      } catch (e) {
+        alert(e.message);
+        loadCaptcha();
+      }
+    }
+
+    async function loginUser() {
+      try {
+        const username = document.getElementById('username').value.trim();
+        const password = document.getElementById('password').value;
+        const data = await api('/api/login', {
+          method: 'POST',
+          body: JSON.stringify({ username, password })
+        });
+        alert(data.message);
+          renderUser(data.user);
+          document.getElementById("username").value = "";
+          document.getElementById("password").value = "";
+          document.getElementById("captcha").value = "";
+          const redeemPanel = document.getElementById("redeemCardWrap");
+          if (redeemPanel) redeemPanel.scrollIntoView({ behavior: "smooth", block: "start" });
+          loadCaptcha();
+        } catch (e) {
+        alert(e.message);
+      }
+    }
+
+    async function logoutUser() {
+      try {
+        const data = await api('/api/logout', { method: 'POST' });
+        alert(data.message);
+        renderUser(null);
+      } catch (e) {
+        alert(e.message);
+      }
+    }
+
+    async function redeemCard() {
+      try {
+        const code = document.getElementById('cardCode').value.trim();
+        const data = await api('/api/redeem-card', {
+          method: 'POST',
+          body: JSON.stringify({ code })
+        });
+        alert(data.message);
+        renderUser(data.user);
+      } catch (e) {
+        alert(e.message);
+      }
+    }
+
+    async function openDownload(id) {
+      try {
+        const data = await api('/api/download/' + id);
+        if (!data.share_url) {
+          alert('当前资源没有分享链接');
+          return;
+        }
+        window.open(data.share_url, '_blank');
+      } catch (e) {
+        alert(e.message);
+      }
+    }
+
+    function goToRedeem() {
+      if (SITE_BUY_URL) {
+        window.open(SITE_BUY_URL, "_blank");
+        return;
+      }
+      const el = document.getElementById("cardCode");
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth", block: "center" });
+        el.focus();
+      }
+    }
+
+    function goToVideo() {
+      if (SITE_VIDEO_URL) {
+        window.open(SITE_VIDEO_URL, "_blank");
+        return;
+      }
+      alert("影视剧入口暂未配置，请稍后再试。");
+    }
+
+    function contactService() {
+      alert(SITE_CONTACT_TEXT || "客服微信 / QQ / Telegram");
+    }
+
+    async function searchResources() {
+        try {
+          const q = document.getElementById('keyword').value.trim();
+          const data = await api('/api/search?q=' + encodeURIComponent(q));
+          const dedupeText = data.deduped
+            ? `（去重前 ${data.rawTotal ?? data.total} 条）`
+            : '';
+          const truncateText = data.truncated
+            ? ' 仅对前 800 条命中做去重。'
+            : '';
+          document.getElementById('searchMeta').innerHTML =
+            `共找到 <b>${data.total}</b> 条结果${dedupeText}。` +
+            (data.membershipActive
+                ? ' 你当前为会员，下载不限次数。'
+                : (currentUser
+                  ? ' 你当前为普通用户，每天最多可查看 3 次下载链接。'
+                  : ' 登录后可查看下载链接，普通用户每天最多 3 次，会员不限。')) +
+            truncateText;
+
+          const wrap = document.getElementById('results');
+          wrap.innerHTML = data.items.map(item => `
+            <div class="item">
+              <div><b>${item.file_name}</b></div>
+              <div class="muted small">大小：${item.file_size || '-'} ｜ 类型：${item.file_type || '-'} ｜ 时间：${item.file_time || '-'}</div>
+              <div style="margin-top:8px;">
+                <button onclick="openDownload(${item.id})">查看下载</button>
+              </div>
+            </div>
+          `).join('') || '<div class="muted">没有搜索到内容</div>';
+        } catch (e) {
+          alert(e.message);
+        }
+      }
+
+      (async function init() {
+      await loadSiteConfig();
+      loadMe();
+      loadCaptcha();
+    })();
+  </script>
+<script id="frontV2MobileBoot">document.addEventListener("DOMContentLoaded",function(){const wrap=document.querySelector(".wrap");if(!wrap)return;const hero=wrap.querySelector(":scope > .card");if(!hero)return;const topbar=hero.querySelector(".topbar");if(topbar&&!document.getElementById("frontMenuBtn")){const btn=document.createElement("button");btn.type="button";btn.id="frontMenuBtn";btn.textContent="☰";topbar.appendChild(btn);}let drawerMask=document.getElementById("frontDrawerMask");if(!drawerMask){drawerMask=document.createElement("div");drawerMask.id="frontDrawerMask";drawerMask.className="frontDrawerMask";document.body.appendChild(drawerMask);}let drawer=document.getElementById("frontDrawer");if(!drawer){drawer=document.createElement("div");drawer.id="frontDrawer";drawer.className="frontDrawer";drawer.innerHTML="<div class=\"frontDrawerHead\"><h3>用户中心</h3><button id=\"frontDrawerClose\" type=\"button\">×</button></div><div id=\"frontDrawerBody\"></div>";document.body.appendChild(drawer);}const drawerBody=document.getElementById("frontDrawerBody");const authGrid=document.getElementById("authGrid");let memberService=document.getElementById("memberServiceWrap");if(!memberService){memberService=Array.from(wrap.querySelectorAll(":scope > .card")).find(c=>{const h=c.querySelector("h3");return h&&h.textContent.trim()==="会员服务";});if(memberService)memberService.id="memberServiceWrap";}if(authGrid&&authGrid.parentNode!==drawerBody)drawerBody.appendChild(authGrid);if(memberService&&memberService.parentNode!==drawerBody)drawerBody.appendChild(memberService);const cards=Array.from(wrap.querySelectorAll(":scope > .card"));const searchCard=cards.find(c=>{const h=c.querySelector("h3");return h&&h.textContent.trim()==="资源搜索";});if(searchCard&&!searchCard.dataset.mobileBuilt){searchCard.dataset.mobileBuilt="1";searchCard.classList.add("frontMobileSearchCard");searchCard.innerHTML="<div class=\"frontMobileTitle\">分享百万级网盘资源，致力打造顶尖网盘搜索引擎，让您畅享资源无忧！ps:本站资源均为采集，请勿相信文件内引流广告勿信</div><div class=\"frontMobileNotice\">电影｜电视剧｜动漫｜短剧｜小说 都在持续更新～</div><div class=\"frontMobileInput\"><div class=\"frontMobileIcon\">⌕</div><input id=\"keyword\" placeholder=\"请在此输入搜索关键词\"><button onclick=\"searchResources()\">搜索</button></div><div class=\"frontMobileSwitchHint\">请输入关键词后选择搜索类型 ↓</div><div class=\"frontMobileActions\"><button type=\"button\" class=\"videoBtn\" onclick=\"goToVideo()\">搜索影视</button><button type=\"button\" class=\"novelBtn\" onclick=\"searchResources()\">搜索小说</button></div><div class=\"frontMobileTips\"><div class=\"tip\">温馨提示：本站搜集全网网盘，若这里没有，其他地方大概率也没有，可先尝试影视入口或更换关键词。</div><div class=\"tip\">搜索框内输入连续的 2-3 个关键字，剧名或书名尽量准确；不要带第几部、第几季这类无关字。</div></div><div id=\"searchMeta\" class=\"muted\"></div><div id=\"results\" class=\"frontV2Results\"></div>";}const kw=document.getElementById("keyword");if(kw&&!kw.dataset.bound){kw.dataset.bound="1";kw.addEventListener("keydown",function(e){if(e.key==="Enter")searchResources();});}function openDrawer(){drawer.classList.add("open");drawerMask.classList.add("open");document.body.style.overflow="hidden";}function closeDrawer(){drawer.classList.remove("open");drawerMask.classList.remove("open");document.body.style.overflow="";}const menuBtn=document.getElementById("frontMenuBtn");if(menuBtn&&!menuBtn.dataset.bound){menuBtn.dataset.bound="1";menuBtn.addEventListener("click",openDrawer);}const closeBtn=document.getElementById("frontDrawerClose");if(closeBtn&&!closeBtn.dataset.bound){closeBtn.dataset.bound="1";closeBtn.addEventListener("click",closeDrawer);}if(!drawerMask.dataset.bound){drawerMask.dataset.bound="1";drawerMask.addEventListener("click",closeDrawer);}function syncUserCenter(){const box=document.getElementById("userCenterSummary");if(!box)return;const user=window.currentUser;if(!user){box.textContent="未登录，可在这里登录、注册并管理会员。";return;}const expireAt=user.membershipExpireAt||user.membership_expire_at||"无";const status=(user.membershipActive||user.membership_active)?"会员有效":"普通用户";box.textContent="用户名："+(user.username||"-")+" ｜ 状态："+status+" ｜ 到期："+formatExpireAt(expireAt);}const rawRenderUser=window.renderUser;window.renderUser=function(user){if(typeof rawRenderUser==="function")rawRenderUser(user);setTimeout(syncUserCenter,0);};const rawUpdate=window.updateLandingState;window.updateLandingState=function(){if(typeof rawUpdate==="function")rawUpdate();const service=document.getElementById("memberServiceWrap");if(service)service.style.display="none";const buyEntryBtn=document.getElementById("buyEntryBtn");if(buyEntryBtn)buyEntryBtn.style.display="none";};setTimeout(function(){if(typeof window.updateLandingState==="function")window.updateLandingState();syncUserCenter();},0);});</script>
+<script id="frontDrawerFixBoot">document.addEventListener("DOMContentLoaded",function(){const wrap=document.querySelector(".wrap");const hero=wrap&&wrap.querySelector(":scope > .card");const topbar=hero&&hero.querySelector(".topbar");if(!topbar)return;let menu=document.getElementById("frontMenuBtn");if(!menu){menu=document.createElement("button");menu.id="frontMenuBtn";menu.type="button";menu.textContent="☰";topbar.appendChild(menu);}let mask=document.getElementById("frontDrawerMask");if(!mask){mask=document.createElement("div");mask.id="frontDrawerMask";mask.className="frontDrawerMask";document.body.appendChild(mask);}let drawer=document.getElementById("frontDrawer");if(!drawer){drawer=document.createElement("div");drawer.id="frontDrawer";drawer.className="frontDrawer";drawer.innerHTML="<div class=\"frontDrawerHead\"><h3>用户中心</h3><button type=\"button\" class=\"frontDrawerClose\">×</button></div><div id=\"frontDrawerBody\"></div>";document.body.appendChild(drawer);}const body=document.getElementById("frontDrawerBody");const auth=document.getElementById("authGrid");let service=document.getElementById("memberServiceWrap");if(!service){service=Array.from(document.querySelectorAll(".wrap > .card")).find(c=>{const h=c.querySelector("h3");return h&&h.textContent.trim()==="会员服务";});if(service)service.id="memberServiceWrap";}if(auth&&auth.parentNode!==body)body.appendChild(auth);if(service&&service.parentNode!==body)body.appendChild(service);function openDrawer(){drawer.classList.add("open");mask.classList.add("open");document.body.style.overflow="hidden";}function closeDrawer(){drawer.classList.remove("open");mask.classList.remove("open");document.body.style.overflow="";}menu.onclick=openDrawer;const closeBtn=drawer.querySelector(".frontDrawerClose");if(closeBtn)closeBtn.onclick=closeDrawer;mask.onclick=closeDrawer;});</script>
+<script id="frontUserTextHotfix">function normalizeFrontUserText(){var p=document.getElementById("userPanel");if(p){p.innerHTML=p.innerHTML.replace(/角色：\s*[^｜<]+｜\s*/g,"").replace(/到期：(\d{4}-\d{2}-\d{2})T(\d{2}:\d{2}).*?Z/g,"到期：$1 $2");}var b=document.getElementById("userCenterSummary");if(b){b.textContent=b.textContent.replace(/ ｜ 角色：[^｜]+/g,"").replace(/到期：(\d{4}-\d{2}-\d{2})T(\d{2}:\d{2}).*/,"到期：$1 $2");}}document.addEventListener("DOMContentLoaded",function(){var raw=window.renderUser;window.renderUser=function(user){if(typeof raw==="function")raw(user);setTimeout(normalizeFrontUserText,0);};setTimeout(normalizeFrontUserText,0);});</script>
+<script id="frontDrawerClickFixBoot">window.forceFrontDrawer=function(open){var d=document.getElementById("frontDrawer");var m=document.getElementById("frontDrawerMask");if(!d||!m)return;if(open){d.classList.add("open");m.classList.add("open");document.body.style.overflow="hidden";}else{d.classList.remove("open");m.classList.remove("open");document.body.style.overflow="";}};document.addEventListener("DOMContentLoaded",function(){var btn=document.getElementById("frontMenuBtn");if(btn){btn.type="button";btn.setAttribute("onclick","forceFrontDrawer(true)");btn.style.pointerEvents="auto";btn.style.zIndex="10020";}var closeBtn=document.querySelector("#frontDrawer .frontDrawerClose, #frontDrawerClose");if(closeBtn){closeBtn.setAttribute("onclick","forceFrontDrawer(false)");}var mask=document.getElementById("frontDrawerMask");if(mask){mask.setAttribute("onclick","forceFrontDrawer(false)");}});</script>
+<script id="frontDrawerContentFixBoot">function syncFrontDrawerContent(){var drawerBody=document.getElementById("frontDrawerBody");if(!drawerBody)return;var userPanel=document.getElementById("userPanel");var box=document.getElementById("frontDrawerUserInfo");if(!box){box=document.createElement("div");box.id="frontDrawerUserInfo";box.innerHTML="<div class=\"drawer-title\">我的会员</div><div class=\"drawer-body\"></div>";drawerBody.prepend(box);}var body=box.querySelector(".drawer-body");if(body&&userPanel){body.innerHTML=userPanel.innerHTML.replace(/<div><b>/,"<div><b>").replace(/<\/div>\s*<div class=\"small muted\">/,"</div><div class=\"small muted\">");}var actions=document.getElementById("userCenterActions");if(actions){Array.from(actions.querySelectorAll("button")).forEach(function(btn){var t=(btn.textContent||"").trim();if(t==="影视剧")btn.remove();});["购买卡密","联系客服","退出登录"].forEach(function(name){var btn=Array.from(actions.querySelectorAll("button")).find(function(x){return (x.textContent||"").trim()===name;});if(btn)actions.appendChild(btn);});}}document.addEventListener("DOMContentLoaded",function(){syncFrontDrawerContent();var raw=window.renderUser;window.renderUser=function(user){if(typeof raw==="function")raw(user);setTimeout(syncFrontDrawerContent,0);};});</script>\n<script id="frontFinalTextFix">function applyFrontFinalTextFix(){document.title="影书搜资源站";var heroTitle=document.querySelector(".wrap > .card:first-child h2");if(heroTitle)heroTitle.textContent="影书搜资源站";var heroMuted=document.querySelector(".wrap > .card:first-child .muted");if(heroMuted)heroMuted.textContent="一站式资源搜索";var bigTitle=document.querySelector(".frontMobileTitle");if(bigTitle)bigTitle.textContent="分享百万级网盘资源，致力打造顶尖网盘搜索引擎，让您畅享资源无忧！ps:本站资源均为采集，请勿相信文件内引流广告勿信";var notice=document.querySelector(".frontMobileNotice");if(notice)notice.textContent="电影｜电视剧｜动漫｜短剧｜小说 都在持续更新～";var panel=document.getElementById("userPanel");if(panel)panel.style.display="none";var summary=document.getElementById("userCenterSummary");var member=document.querySelector("#frontDrawerUserInfo .drawer-body");if(summary){if(member&&/到期：\s*\d{4}-\d{2}-\d{2}/.test(member.textContent)){summary.textContent="已登录，可在这里购买卡密、兑换会员与联系站长。";}else{summary.textContent="未登录，可在这里登录、注册并管理会员。";}}}document.addEventListener("DOMContentLoaded",function(){applyFrontFinalTextFix();var raw=window.renderUser;window.renderUser=function(user){if(typeof raw==="function")raw(user);setTimeout(applyFrontFinalTextFix,0);};setTimeout(applyFrontFinalTextFix,0);});</script>\n<script id="frontFinalRoundPolishBoot">function cleanFrontGhostText(){Array.from(document.body.childNodes).forEach(function(n){if(n.nodeType===3&&/^\\n\s*$/.test((n.nodeValue||"").trim()))n.remove();if(n.nodeType===3&&/^\s*$/.test(n.nodeValue||""))n.remove();});var walker=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);var arr=[];while(walker.nextNode())arr.push(walker.currentNode);arr.forEach(function(n){var t=(n.nodeValue||"").trim();if(t==="\\n")n.remove();});}document.addEventListener("DOMContentLoaded",function(){cleanFrontGhostText();setTimeout(cleanFrontGhostText,0);var raw=window.renderUser;window.renderUser=function(user){if(typeof raw==="function")raw(user);setTimeout(cleanFrontGhostText,0);};});</script>
+</body>
+</html>

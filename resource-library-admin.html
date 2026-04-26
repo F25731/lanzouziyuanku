@@ -1,0 +1,518 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>个人资源库后台</title>
+  <style>
+    :root {
+      --bg: #f4f7fb;
+      --panel: #ffffff;
+      --line: #dbe3ef;
+      --text: #102033;
+      --muted: #64748b;
+      --blue: #2563eb;
+      --green: #15803d;
+      --red: #dc2626;
+      --orange: #c2410c;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, "Microsoft YaHei", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+    .shell {
+      display: grid;
+      grid-template-columns: 220px minmax(0, 1fr);
+      min-height: 100vh;
+    }
+    aside {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      padding: 18px 14px;
+      border-right: 1px solid var(--line);
+      background: #fff;
+    }
+    .brand {
+      padding: 14px;
+      border: 1px solid #dbeafe;
+      border-radius: 8px;
+      background: #eff6ff;
+      font-weight: 800;
+    }
+    nav { display: grid; gap: 8px; margin-top: 18px; }
+    nav a {
+      padding: 12px 14px;
+      border-radius: 8px;
+      color: #334155;
+      text-decoration: none;
+      font-weight: 700;
+    }
+    nav a:hover, nav a.active { background: #eff6ff; color: var(--blue); }
+    main { padding: 18px; }
+    .topbar, .card {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      box-shadow: 0 8px 24px rgba(15, 23, 42, .04);
+    }
+    .topbar {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 240px 220px 110px;
+      gap: 10px;
+      align-items: center;
+      padding: 14px;
+      margin-bottom: 14px;
+    }
+    .card { padding: 16px; margin-bottom: 14px; }
+    h1, h2, h3 { margin: 0; }
+    h1 { font-size: 22px; }
+    h2 { font-size: 18px; margin-bottom: 12px; }
+    h3 { font-size: 15px; margin-bottom: 10px; }
+    .muted { color: var(--muted); font-size: 13px; line-height: 1.6; }
+    .grid { display: grid; gap: 12px; }
+    .grid.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .grid.four { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+    input, select, textarea, button {
+      width: 100%;
+      min-height: 40px;
+      padding: 9px 11px;
+      border: 1px solid #cfd8e6;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+    textarea { min-height: 82px; resize: vertical; }
+    button {
+      cursor: pointer;
+      border-color: var(--blue);
+      background: var(--blue);
+      color: #fff;
+      font-weight: 700;
+    }
+    button.secondary { background: #fff; color: var(--blue); }
+    button.danger { background: #fff; color: var(--red); border-color: #fecaca; }
+    button.warn { background: #fff; color: var(--orange); border-color: #fed7aa; }
+    .stat {
+      padding: 14px;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      background: #f8fafc;
+    }
+    .stat strong { display: block; margin-top: 6px; font-size: 22px; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td {
+      padding: 10px 8px;
+      border-bottom: 1px solid #edf2f7;
+      text-align: left;
+      vertical-align: top;
+      font-size: 13px;
+    }
+    th { color: #475569; background: #f8fafc; }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      height: 24px;
+      padding: 0 9px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      background: #f1f5f9;
+      color: #475569;
+    }
+    .badge.ok { background: #ecfdf3; color: var(--green); }
+    .badge.warn { background: #fff7ed; color: var(--orange); }
+    .message {
+      display: none;
+      margin: 10px 0;
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-size: 13px;
+    }
+    .message.ok { display: block; background: #ecfdf3; color: var(--green); }
+    .message.err { display: block; background: #fef2f2; color: var(--red); }
+    .panel { display: none; }
+    .panel.active { display: block; }
+    .resource-card {
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 14px;
+      background: #fff;
+    }
+    .resource-title { font-weight: 800; word-break: break-all; }
+    .actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+    .actions button { width: auto; min-height: 34px; padding: 7px 10px; font-size: 12px; }
+    @media (max-width: 900px) {
+      .shell { display: block; }
+      aside { position: relative; height: auto; }
+      .topbar, .grid.two, .grid.four { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <aside>
+      <div class="brand">个人资源库</div>
+      <nav id="nav">
+        <a href="#overview" class="active">概况</a>
+        <a href="#sources">蓝奏来源</a>
+        <a href="#resources">资源管理</a>
+        <a href="#logs">同步日志</a>
+        <a href="#tokens">开放接口</a>
+      </nav>
+    </aside>
+    <main>
+      <section class="topbar">
+        <div>
+          <h1>本地管理台</h1>
+          <div class="muted">服务器只提供 API，本页面可以直接保存在你的电脑上。</div>
+        </div>
+        <input id="serverBase" type="url" placeholder="http://127.0.0.1:3000">
+        <input id="adminToken" type="password" placeholder="ADMIN_API_TOKEN">
+        <button id="connectBtn">连接</button>
+      </section>
+
+      <div id="globalMessage" class="message"></div>
+
+      <section id="overview" class="panel active">
+        <div class="card">
+          <h2>概况</h2>
+          <div class="grid four">
+            <div class="stat"><span class="muted">资源来源</span><strong id="statSources">0</strong></div>
+            <div class="stat"><span class="muted">可见资源</span><strong id="statResources">0</strong></div>
+            <div class="stat"><span class="muted">隐藏资源</span><strong id="statHidden">0</strong></div>
+            <div class="stat"><span class="muted">同步日志</span><strong id="statLogs">0</strong></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="sources" class="panel">
+        <div class="card">
+          <h2>添加蓝奏优享版来源</h2>
+          <div class="grid two">
+            <input id="sourceTitle" placeholder="来源名称，例如：主蓝奏账号">
+            <input id="rootFolderId" type="number" value="0" placeholder="根目录 ID，默认 0">
+            <select id="loginType">
+              <option value="account">账号密码登录</option>
+              <option value="cookie">Cookie 登录</option>
+            </select>
+            <input id="sourceAccount" placeholder="蓝奏账号">
+            <input id="sourcePassword" type="password" placeholder="蓝奏密码">
+            <input id="sourceRemark" placeholder="备注">
+          </div>
+          <textarea id="sourceCookie" placeholder="Cookie 登录时粘贴 Cookie"></textarea>
+          <div class="actions"><button id="saveSourceBtn">保存来源</button></div>
+        </div>
+        <div class="card">
+          <h2>来源列表</h2>
+          <div id="sourceList"></div>
+        </div>
+      </section>
+
+      <section id="resources" class="panel">
+        <div class="card">
+          <h2>资源管理</h2>
+          <div class="row">
+            <input id="resourceKeyword" placeholder="搜索资源名">
+            <select id="resourceStatus" style="max-width:160px;">
+              <option value="all">全部</option>
+              <option value="visible">可见</option>
+              <option value="hidden">隐藏</option>
+            </select>
+            <button id="searchResourceBtn" style="max-width:120px;">搜索</button>
+          </div>
+          <div id="resourceMeta" class="muted" style="margin-top:10px;"></div>
+          <div id="resourceList" class="grid" style="margin-top:12px;"></div>
+        </div>
+      </section>
+
+      <section id="logs" class="panel">
+        <div class="card">
+          <div class="row">
+            <h2 style="flex:1;">同步日志</h2>
+            <button id="clearLogsBtn" class="danger" style="max-width:120px;">清空日志</button>
+          </div>
+          <table>
+            <thead><tr><th>ID</th><th>来源</th><th>状态</th><th>消息</th><th>时间</th></tr></thead>
+            <tbody id="logTable"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="tokens" class="panel">
+        <div class="card">
+          <h2>开放接口 Token</h2>
+          <div class="grid two">
+            <input id="tokenName" placeholder="Token 名称，例如：本地脚本">
+            <select id="tokenScope">
+              <option value="read">只读搜索</option>
+              <option value="write">读写</option>
+              <option value="admin">管理</option>
+            </select>
+          </div>
+          <div class="actions"><button id="createTokenBtn">创建 Token</button></div>
+          <div id="newTokenBox" class="message ok"></div>
+        </div>
+        <div class="card">
+          <h2>Token 列表</h2>
+          <table>
+            <thead><tr><th>ID</th><th>名称</th><th>权限</th><th>状态</th><th>创建时间</th><th>操作</th></tr></thead>
+            <tbody id="tokenTable"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const BASE_KEY = 'resource_library_admin_base';
+    const TOKEN_KEY = 'resource_library_admin_token';
+    const state = {
+      base: localStorage.getItem(BASE_KEY) || '',
+      token: localStorage.getItem(TOKEN_KEY) || ''
+    };
+
+    const $ = (id) => document.getElementById(id);
+    $('serverBase').value = state.base;
+    $('adminToken').value = state.token;
+
+    function escapeHtml(value) {
+      return String(value ?? '')
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#039;');
+    }
+
+    function showMessage(message, ok = true) {
+      const node = $('globalMessage');
+      node.className = ok ? 'message ok' : 'message err';
+      node.textContent = message;
+    }
+
+    function normalizeBase(value) {
+      return String(value || '').trim().replace(/\/+$/, '');
+    }
+
+    async function api(path, options = {}) {
+      if (!state.base || !state.token) throw new Error('请先填写服务器地址和后台口令');
+      const response = await fetch(state.base + path, {
+        ...options,
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Admin-Token': state.token,
+          ...(options.headers || {})
+        }
+      });
+      const data = await response.json().catch(() => ({ message: '接口返回异常' }));
+      if (!response.ok) throw new Error(data.message || '请求失败');
+      return data;
+    }
+
+    function openPanel(id) {
+      document.querySelectorAll('.panel').forEach((panel) => panel.classList.toggle('active', panel.id === id));
+      document.querySelectorAll('nav a').forEach((link) => link.classList.toggle('active', link.getAttribute('href') === '#' + id));
+    }
+
+    async function loadStats() {
+      const data = await api('/api/local-admin/stats');
+      $('statSources').textContent = data.sources || 0;
+      $('statResources').textContent = data.resources || 0;
+      $('statHidden').textContent = data.hidden || 0;
+      $('statLogs').textContent = data.syncLogs || 0;
+    }
+
+    async function loadSources() {
+      const data = await api('/api/local-admin/sources');
+      $('sourceList').innerHTML = (data.items || []).map((item) => `
+        <div class="resource-card">
+          <div class="resource-title">${escapeHtml(item.title)}</div>
+          <div class="muted">ID: ${item.id} ｜ ${escapeHtml(item.provider)} ｜ 根目录: ${escapeHtml(item.root_folder_id)} ｜ ${escapeHtml(item.login_type)}</div>
+          <div class="muted">账号: ${escapeHtml(item.account || '-')} ｜ 上次同步: ${escapeHtml(item.last_sync_at || '-')}</div>
+          <div class="actions">
+            <button onclick="checkSource(${item.id})">检测</button>
+            <button onclick="syncSource(${item.id})">立即同步</button>
+            <button class="danger" onclick="deleteSource(${item.id})">删除</button>
+          </div>
+        </div>
+      `).join('') || '<div class="muted">暂无来源</div>';
+    }
+
+    async function saveSource() {
+      const payload = {
+        title: $('sourceTitle').value.trim(),
+        provider: 'ilanzou',
+        rootFolderId: Number($('rootFolderId').value || 0),
+        loginType: $('loginType').value,
+        account: $('sourceAccount').value.trim(),
+        passwordText: $('sourcePassword').value,
+        cookieText: $('sourceCookie').value,
+        remark: $('sourceRemark').value.trim()
+      };
+      const data = await api('/api/local-admin/sources', { method: 'POST', body: JSON.stringify(payload) });
+      showMessage(data.message);
+      await loadSources();
+      await loadStats();
+    }
+
+    async function checkSource(id) {
+      const data = await api(`/api/local-admin/sources/${id}/check`, { method: 'POST', body: '{}' });
+      showMessage(`${data.message}: ${data.total || 0} 个文件`);
+      await loadLogs();
+    }
+
+    async function syncSource(id) {
+      const data = await api(`/api/local-admin/sources/${id}/sync`, { method: 'POST', body: '{}' });
+      showMessage(`${data.message}: ${data.total || 0} 个文件`);
+      await Promise.all([loadStats(), loadResources(), loadLogs(), loadSources()]);
+    }
+
+    async function deleteSource(id) {
+      if (!confirm('删除这个来源会同时删除它同步进来的资源，确认继续？')) return;
+      const data = await api(`/api/local-admin/sources/${id}`, { method: 'DELETE' });
+      showMessage(data.message);
+      await Promise.all([loadStats(), loadSources(), loadResources()]);
+    }
+
+    async function loadResources() {
+      const q = encodeURIComponent($('resourceKeyword').value.trim());
+      const status = encodeURIComponent($('resourceStatus').value);
+      const data = await api(`/api/local-admin/resources?q=${q}&status=${status}`);
+      $('resourceMeta').textContent = `共 ${data.total || 0} 条资源`;
+      $('resourceList').innerHTML = (data.items || []).map((item) => `
+        <div class="resource-card" data-resource-id="${item.id}">
+          <div class="resource-title">${escapeHtml(item.file_name)}</div>
+          <div class="muted">大小: ${escapeHtml(item.file_size || '-')} ｜ 类型: ${escapeHtml(item.file_type || '-')} ｜ 状态: ${escapeHtml(item.status || 'visible')}</div>
+          <div class="grid two" style="margin-top:10px;">
+            <input class="categoryInput" value="${escapeHtml(item.category || '')}" placeholder="分类">
+            <input class="tagsInput" value="${escapeHtml(item.tags || '')}" placeholder="标签，逗号分隔">
+          </div>
+          <textarea class="noteInput" placeholder="备注">${escapeHtml(item.note || '')}</textarea>
+          <div class="actions">
+            <button onclick="saveResource(${item.id})">保存</button>
+            <button class="warn" onclick="setResourceStatus(${item.id}, '${item.status === 'hidden' ? 'visible' : 'hidden'}')">${item.status === 'hidden' ? '设为可见' : '隐藏'}</button>
+            <button class="secondary" onclick="copyText(decodeURIComponent('${encodeURIComponent(item.share_url || '')}'))">复制链接</button>
+            <button class="danger" onclick="deleteResource(${item.id})">删除</button>
+          </div>
+        </div>
+      `).join('') || '<div class="muted">暂无资源</div>';
+    }
+
+    async function saveResource(id) {
+      const card = document.querySelector(`[data-resource-id="${id}"]`);
+      const payload = {
+        category: card.querySelector('.categoryInput').value,
+        tags: card.querySelector('.tagsInput').value,
+        note: card.querySelector('.noteInput').value
+      };
+      const data = await api(`/api/local-admin/resources/${id}`, { method: 'PATCH', body: JSON.stringify(payload) });
+      showMessage(data.message);
+    }
+
+    async function setResourceStatus(id, status) {
+      const data = await api(`/api/local-admin/resources/${id}`, { method: 'PATCH', body: JSON.stringify({ status }) });
+      showMessage(data.message);
+      await Promise.all([loadStats(), loadResources()]);
+    }
+
+    async function deleteResource(id) {
+      if (!confirm('确认删除这个资源索引？蓝奏云原文件不会被删除。')) return;
+      const data = await api(`/api/local-admin/resources/${id}`, { method: 'DELETE' });
+      showMessage(data.message);
+      await Promise.all([loadStats(), loadResources()]);
+    }
+
+    async function loadLogs() {
+      const data = await api('/api/local-admin/sync-logs');
+      $('logTable').innerHTML = (data.items || []).map((item) => `
+        <tr>
+          <td>${item.id}</td>
+          <td>${escapeHtml(item.account_id || '-')}</td>
+          <td><span class="badge ${item.status === 'success' ? 'ok' : 'warn'}">${escapeHtml(item.status)}</span></td>
+          <td>${escapeHtml(item.message || '')}</td>
+          <td>${escapeHtml(item.created_at || '')}</td>
+        </tr>
+      `).join('') || '<tr><td colspan="5" class="muted">暂无日志</td></tr>';
+    }
+
+    async function clearLogs() {
+      if (!confirm('确认清空同步日志？')) return;
+      const data = await api('/api/local-admin/sync-logs', { method: 'DELETE' });
+      showMessage(data.message);
+      await Promise.all([loadStats(), loadLogs()]);
+    }
+
+    async function loadTokens() {
+      const data = await api('/api/local-admin/tokens');
+      $('tokenTable').innerHTML = (data.items || []).map((item) => `
+        <tr>
+          <td>${item.id}</td>
+          <td>${escapeHtml(item.name)}</td>
+          <td>${escapeHtml(item.scope)}</td>
+          <td><span class="badge ${item.enabled ? 'ok' : 'warn'}">${item.enabled ? '启用' : '停用'}</span></td>
+          <td>${escapeHtml(item.created_at || '')}</td>
+          <td><button class="danger" onclick="deleteToken(${item.id})">删除</button></td>
+        </tr>
+      `).join('') || '<tr><td colspan="6" class="muted">暂无 Token</td></tr>';
+    }
+
+    async function createToken() {
+      const payload = { name: $('tokenName').value.trim() || 'API Token', scope: $('tokenScope').value };
+      const data = await api('/api/local-admin/tokens', { method: 'POST', body: JSON.stringify(payload) });
+      const box = $('newTokenBox');
+      box.style.display = 'block';
+      box.textContent = `新 Token 只显示一次：${data.token}`;
+      await loadTokens();
+    }
+
+    async function deleteToken(id) {
+      if (!confirm('确认删除这个 Token？')) return;
+      const data = await api(`/api/local-admin/tokens/${id}`, { method: 'DELETE' });
+      showMessage(data.message);
+      await loadTokens();
+    }
+
+    async function copyText(text) {
+      if (!text) return showMessage('这个资源没有链接', false);
+      await navigator.clipboard.writeText(text);
+      showMessage('链接已复制');
+    }
+
+    async function loadAll() {
+      await Promise.all([loadStats(), loadSources(), loadResources(), loadLogs(), loadTokens()]);
+      showMessage('连接成功');
+    }
+
+    document.querySelectorAll('nav a').forEach((link) => {
+      link.addEventListener('click', (event) => {
+        event.preventDefault();
+        const id = link.getAttribute('href').slice(1);
+        history.replaceState(null, '', '#' + id);
+        openPanel(id);
+      });
+    });
+
+    $('connectBtn').addEventListener('click', async () => {
+      state.base = normalizeBase($('serverBase').value);
+      state.token = $('adminToken').value.trim();
+      localStorage.setItem(BASE_KEY, state.base);
+      localStorage.setItem(TOKEN_KEY, state.token);
+      try { await loadAll(); } catch (error) { showMessage(error.message, false); }
+    });
+    $('saveSourceBtn').addEventListener('click', () => saveSource().catch((error) => showMessage(error.message, false)));
+    $('searchResourceBtn').addEventListener('click', () => loadResources().catch((error) => showMessage(error.message, false)));
+    $('resourceKeyword').addEventListener('keydown', (event) => {
+      if (event.key === 'Enter') loadResources().catch((error) => showMessage(error.message, false));
+    });
+    $('clearLogsBtn').addEventListener('click', () => clearLogs().catch((error) => showMessage(error.message, false)));
+    $('createTokenBtn').addEventListener('click', () => createToken().catch((error) => showMessage(error.message, false)));
+
+    openPanel((location.hash || '#overview').slice(1));
+    if (state.base && state.token) loadAll().catch(() => {});
+  </script>
+</body>
+</html>

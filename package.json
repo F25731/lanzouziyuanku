@@ -1,0 +1,33 @@
+{
+  "name": "lanzou-site",
+  "version": "1.0.1",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "migrate": "node scripts/run_migrations.js",
+    "test": "node test/dedupeService.test.js && node test/localAdminAuth.test.js && node test/schemaService.test.js",
+    "check": "node --check app.js && node --check routes/api.js && node --check routes/localAdmin.js && node --check services/dedupeService.js && node --check services/schemaService.js && node --check scripts/run_migrations.js && node --check scripts/ilanzou_sync_sdk.js",
+    "sync:test": "node -e \"const svc=require(\\\"./services/lanzouSyncService\\\"); svc.checkAccount(5).then(r=>{console.log(JSON.stringify(r,null,2));process.exit(0)}).catch(e=>{console.error(e);process.exit(1)})\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@netdrive-sdk/ilanzou": "^1.0.3-alpha.4",
+    "axios": "^1.14.0",
+    "bcryptjs": "^3.0.3",
+    "compression": "^1.8.1",
+    "connect-redis": "^9.0.0",
+    "cookie-parser": "^1.4.7",
+    "dayjs": "^1.11.20",
+    "dotenv": "^17.3.1",
+    "express": "^5.2.1",
+    "express-session": "^1.19.0",
+    "helmet": "^8.1.0",
+    "ioredis": "^5.10.1",
+    "mysql2": "^3.20.0",
+    "redis": "^5.11.0",
+    "uuid": "^13.0.0"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "name": "lanzou-site",
+  "version": "1.0.1",
+  "release_date": "2026-04-09",
+  "release_notes": [
+    "基础商业交付版",
+    "支持 install/update/backup/rollback/healthcheck",
+    "支持数据库迁移机制",
+    "支持同步时自动写入 share_url",
+    "小说搜索结果去重",
+    "同名小说按优先级展示主结果",
+    "前台显示去重前结果数量"
+  ]
+}

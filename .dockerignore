@@ -1,0 +1,13 @@
+node_modules
+.env
+.env.*
+!.env.example
+.git
+logs
+releases
+*.bak
+*.bak_*
+*.save
+__pycache__
+*.pyc
+npm-debug.log*
