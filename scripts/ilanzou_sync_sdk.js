@@ -67,7 +67,7 @@ async function fetchAllInFolder(client, folderId) {
   return all;
 }
 
-async function walkFolder(client, folderId, files, visited) {
+async function walkFolder(client, folderId, files, visited, options = {}) {
   const key = String(folderId ?? 0);
   if (visited.has(key)) return;
   visited.add(key);
@@ -76,13 +76,13 @@ async function walkFolder(client, folderId, files, visited) {
 
   for (const item of items) {
     if (isFolderItem(item)) {
-      await walkFolder(client, Number(item.folderId), files, visited);
+      await walkFolder(client, Number(item.folderId), files, visited, options);
       continue;
     }
 
     if (isFileItem(item)) {
         const fileId = String(item.fileId || item.id || "");
-        const shareUrl = fileId ? await safeShareUrl(client, fileId) : "";
+        const shareUrl = options.includeShareUrls && fileId ? await safeShareUrl(client, fileId) : "";
         files.push(fileToDict(item, folderId, shareUrl));
       }
   }
@@ -93,6 +93,7 @@ async function main() {
   const account = String(input.account || "").trim();
   const password = String(input.password || "");
   const rootFolderId = Number(input.rootFolderId || 0);
+  const includeShareUrls = input.includeShareUrls === true;
 
   if (!account || !password) {
     throw new Error("ilanzou 账号或密码为空");
@@ -109,7 +110,7 @@ async function main() {
 
   const files = [];
   const visited = new Set();
-  await walkFolder(client, rootFolderId, files, visited);
+  await walkFolder(client, rootFolderId, files, visited, { includeShareUrls });
 
   process.stdout.write(JSON.stringify({ ok: true, total: files.length, files }, null, 2));
 }

@@ -85,6 +85,18 @@ async function updateSyncLog(logId, status, message) {
   );
 }
 
+function buildSyncInput(account, options = {}) {
+  return {
+    provider: account.provider,
+    rootFolderId: account.root_folder_id,
+    loginType: account.login_type,
+    account: account.account,
+    password: account.password_text,
+    cookie: account.cookie_text,
+    includeShareUrls: options.includeShareUrls === true
+  };
+}
+
 async function runPythonSync(account) {
   return new Promise((resolve, reject) => {
     const isIlanzou = account.provider === "ilanzou";
@@ -130,14 +142,7 @@ async function runPythonSync(account) {
       }
     });
 
-    child.stdin.write(JSON.stringify({
-      provider: account.provider,
-      rootFolderId: account.root_folder_id,
-      loginType: account.login_type,
-      account: account.account,
-      password: account.password_text,
-      cookie: account.cookie_text
-    }));
+    child.stdin.write(JSON.stringify(buildSyncInput(account, { includeShareUrls: false })));
     child.stdin.end();
   });
 }
@@ -238,5 +243,6 @@ module.exports = {
   saveLanzouAccount,
   checkAccount,
   syncAccount,
-  listSyncLogs
+  listSyncLogs,
+  buildSyncInput
 };

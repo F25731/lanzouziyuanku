@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node app.js",
     "migrate": "node scripts/run_migrations.js",
-    "test": "node test/dedupeService.test.js && node test/localAdminAuth.test.js && node test/schemaService.test.js",
+    "test": "node test/dedupeService.test.js && node test/localAdminAuth.test.js && node test/schemaService.test.js && node test/lanzouSyncService.test.js",
     "check": "node --check app.js && node --check routes/api.js && node --check routes/localAdmin.js && node --check services/dedupeService.js && node --check services/schemaService.js && node --check scripts/run_migrations.js && node --check scripts/ilanzou_sync_sdk.js",
     "sync:test": "node -e \"const svc=require(\\\"./services/lanzouSyncService\\\"); svc.checkAccount(5).then(r=>{console.log(JSON.stringify(r,null,2));process.exit(0)}).catch(e=>{console.error(e);process.exit(1)})\""
   },
